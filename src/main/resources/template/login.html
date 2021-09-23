@@ -3,19 +3,10 @@
 
 <head>
     <meta charset="ISO-8859-1">
-    <title>Login Page</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <title>Lodi Login</title>
 </head>
-
-<body class="bg-secondary text-white">
-
-<h1 class="jumbotron bg-secondary text-center text-white">Login to explore more...!</h1>
-
-<div class="container bg-secondary text-white">
-
+<body>
+<h1 >Login</h1>
     <form method="post" th:action="@{/login}">
 
         <div th:if="${param.error}">

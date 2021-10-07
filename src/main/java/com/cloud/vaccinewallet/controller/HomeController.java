@@ -122,7 +122,7 @@ public class HomeController {
     }
     @PostMapping(value = "/generateQR",  consumes = "multipart/form-data")
     public String generateQR(Model model, @RequestParam(value="vacfile") MultipartFile vacfile) throws IOException, WriterException {
-        String path= "C:\\Users\\om patel\\Downloads\\code.png";
+        String path= "C:\\Users\\Sn3haL\\Downloads\\code.png";
 
         PDDocument document = PDDocument.load(vacfile.getBytes());
         PDFTextStripper pdfStripper = new PDFTextStripper();
@@ -136,8 +136,6 @@ public class HomeController {
         System.out.println("Create QR");
 
         model.addAttribute("pdfInformation", text);
-
-
         return "user/code";
     }
 

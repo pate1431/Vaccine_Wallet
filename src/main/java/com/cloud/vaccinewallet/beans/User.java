@@ -34,6 +34,12 @@ public class User {
     @Lob
     private Blob qr;
 
+    public User(@NonNull String username,@NonNull String encryptedPassword, Byte enabled) {
+        this.username = username;
+        this.encryptedPassword=encryptedPassword;
+        this.enabled=enabled;
+    }
+
     //User Information
     @NonNull
     private String firstName;

@@ -89,8 +89,14 @@ public class HomeController {
         return "user/contact";
     }
 
+    @GetMapping("/index")
+    public String homePage() {
+        return "user/index";
+    }
+
     @GetMapping("/code")
-    public String codePage() {
+    public String codePage(Model model) {
+        model.getAttribute("pdfInformation");
         return "user/code";
     }
 
@@ -107,7 +113,7 @@ public class HomeController {
     }
     @PostMapping(value = "/generateQR",  consumes = "multipart/form-data")
     public String generateQR(Model model, @RequestParam(value="vacfile") MultipartFile vacfile) throws IOException, WriterException {
-        String path= "C:\\Users\\Sn3haL\\Downloads\\3.png";
+        String path= "C:\\Users\\Sn3haL\\Downloads\\code.png";
 
         PDDocument document = PDDocument.load(vacfile.getBytes());
         PDFTextStripper pdfStripper = new PDFTextStripper();
@@ -120,6 +126,11 @@ public class HomeController {
         MatrixToImageWriter.writeToFile(matrix, path.substring(path.lastIndexOf('.') + 1), new File(path));
         System.out.println("Create QR");
 
+        model.addAttribute("pdfInformation", text);
+
+
         return "user/code";
     }
+
+
 }

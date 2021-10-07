@@ -4,23 +4,36 @@
 <head>
     <meta charset="ISO-8859-1">
     <title>Login</title>
-    <link rel="stylesheet" type="text/css" media="all"
-          href="../static/js/css/login.css"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/js/css/login.css}"/>
 </head>
 <body>
 <h2>Please Log In</h2>
     <form method="post" th:action="@{/login}">
         <div class="imgcontainer">
-            <img src="../static/js/images/login.png" alt="Avatar" class="avatar">
+            <img th:src="@{/js/image/login.png}" alt="Avatar" class="avatar">
         </div>
+
         <div class="container">
-            <div th:if="param.error">
-                <div style="color: red;">Invalid Username Or Password</div>
+
+            <div th:if="${param.error}">
+                <div style="color:red;">
+                    Invalid username or password.
+                </div>
             </div>
+
+            <br>
+
+            <div th:if="${param.logout}">
+                <div style="color:red;">
+                    You have been logged out.
+                </div>
+            <br>
+            </div>
+
+
+
             Username:<input type="text" name="username"><br>
-            <div th:if="param.logout">
-                <div style="color: red;">You Have Been Logged Out</div>
-            </div>
+
             Password:<input type="password" name="password"><br>
             <input type="submit" class="button" value="Log In" name="login-submit">
         </div>

@@ -1,11 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
     <title>Welcome</title>
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../static/js/css/index.css"/>
+
 </head>
 <body>
-  <H1>Insider</H1>
+
+  <ul>
+      <li><a class="active" href="index.html" th:href="@{/index}">Home</a></li>
+      <li><a href="upload.html"  th:href="@{/upload}"> Upload Documents</a></li>
+      <li><a href="code.html" th:href="@{/code}">Qr-Code Information</a></li>
+      <li><a href="contact.html" th:href="@{/contact}">Contact</a></li>
+      <li style="float: right"><a href="#about">About</a></li>
+  </ul>
+  <h2>Welcome To The Vaccine Wallet Application</h2>
+
+
   <h2><a href="/user" th:href="@{/logout}" class="text-white">Logout</a></H2>
 </body>
 </html>

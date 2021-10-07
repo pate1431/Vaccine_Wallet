@@ -2,41 +2,41 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
+    <link rel="stylesheet" type="text/css" media="all"
+            href="../static/js/css/register.css"/>
+
     <meta charset="ISO-8859-1">
     <title>Register</title>
 </head>
 
 <body>
-<h1 class="jumbotron bg-secondary text-white text-center">Register</h1>
+<h1>Register</h1>
 
 <div class="container">
+
+    <h1>Register</h1>
+    <p>Please fill in this form to create an account.</p>
 
     <div id="error" class="alert"></div>
 
     <form name="form" action="#" th:action="@{/register}" method="post" onsubmit="return verify()">
         <div class="row">
             <div class="col">
-                <input type="text" class="form-control" name="username" placeholder="Enter your new username!">
+                <input type="text" id="email" class="form-control" name="username" placeholder="Enter your new username!">
+
             </div>
             <div class="col">
-                <input type="password" class="form-control" name="password" placeholder="Create a new password">
+                <input type="password" id="psw" class="form-control" name="password" placeholder="Create a new password">
             </div>
             <div class="col">
-                <input type="password" class="form-control" name="verifyPassword" placeholder="Re-enter your password">
+                <input type="password" id="psw-repeat" class="form-control" name="verifyPassword" placeholder="Re-enter your password">
             </div>
         </div><br>
 
-        <div class="row">
-            <div class="col">
-                <button class="btn btn-dark form-control" type="submit" id="test" name="login-submit">Sign Up</button>
-            </div>
-            <div class="col">
+                <button type="submit" class="registerbtn" name="login-submit">Sign Up</button>
                 <a class="btn btn-dark form-control" href="/login" th:href="@{/login}">Login Page</a>
-            </div>
-            <div class="col">
+               <br>
                 <a class="btn btn-dark form-control" href="/" th:href="@{/}">Welcome Page</a>
-            </div>
-        </div>
     </form>
 
 </div>

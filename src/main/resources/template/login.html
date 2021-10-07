@@ -4,49 +4,29 @@
 <head>
     <meta charset="ISO-8859-1">
     <title>Login</title>
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../static/js/css/login.css"/>
 </head>
 <body>
-<h1 >Login</h1>
+<h2>Please Log In</h2>
     <form method="post" th:action="@{/login}">
-
-        <div th:if="${param.error}">
-            <div style="color:white;">
-                Invalid username or password.
-            </div>
+        <div class="imgcontainer">
+            <img src="../static/js/images/login.png" alt="Avatar" class="avatar">
         </div>
-
-        <div th:if="${param.logout}">
-            <div style="color:white;">
-                You have been logged out.
+        <div class="container">
+            <div th:if="param.error">
+                <div style="color: red;">Invalid Username Or Password</div>
             </div>
-            <br>
+            Username:<input type="text" name="username"><br>
+            <div th:if="param.logout">
+                <div style="color: red;">You Have Been Logged Out</div>
+            </div>
+            Password:<input type="password" name="password"><br>
+            <input type="submit" class="button" value="Log In" name="login-submit">
         </div>
-
-        <form>
-            <div class="row">
-                <div class="col">
-                    <input type="text" class="form-control" name="username" placeholder="User Name Please ...!">
-                </div>
-                <div class="col">
-                    <input type="password" class="form-control" name="password" placeholder="Password Please ...!">
-                </div>
-            </div><br><br>
-
-            <div class="row">
-                <div class="col">
-                    <button class="btn btn-dark form-control" type="submit" name="login-submit">Log In</button>
-                </div>
-                <div class="col">
-                    <a class="btn btn-dark form-control" href="/register" th:href="@{/register}">Create New Account</a>
-                </div>
-                <div class="col">
-                    <a class="btn btn-dark form-control" href="/" th:href="@{/}">Welcome Page</a>
-                </div>
-            </div>
-        </form>
-
     </form>
-</div>
+<p><a href="/register" >Create Account</a></p>
+
 
 </body>
 

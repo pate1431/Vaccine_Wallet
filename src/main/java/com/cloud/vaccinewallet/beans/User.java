@@ -34,6 +34,24 @@ public class User {
     @Lob
     private Blob qr;
 
+    //User Information
+    @NonNull
+    private String firstName;
+    @NonNull
+    private String lastName;
+
+    private String middleName;
+    @NonNull
+    private Long phoneNumber;
+    @NonNull
+    private Integer age;
+    @NonNull
+    private String email;
+
+   
+
+
+
     @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Role> roles = new ArrayList<Role>();
 

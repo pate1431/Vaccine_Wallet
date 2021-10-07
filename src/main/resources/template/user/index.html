@@ -13,8 +13,9 @@
       <li><a class="active" href="index.html" th:href="@{/index}">Home</a></li>
       <li><a href="upload.html"  th:href="@{/upload}"> Upload Documents</a></li>
       <li><a href="code.html" th:href="@{/code}">Qr-Code Information</a></li>
+      <li><a href="profile.html" th:href="@{'/profile/'+${name}}">Edit Profile</a></li>
       <li><a href="contact.html" th:href="@{/contact}">Contact</a></li>
-      <li style="float: right"><a href="#about">About</a></li>
+      <li style="float: right"><a href="/user" th:href="@{/logout}" class="text-white">Logout</a></li>
   </ul>
   <h2>Welcome To The Vaccine Wallet Application</h2>
 
@@ -23,16 +24,20 @@
 
   <div class="card">
       <form th:action="@{code}">
+          <label>Usename: </label>
       <h1 th:text = "${name}">name for the user</h1>
-      <p>Full Name</p>
-      <p>Age</p>
-      <p>Phone number</p>
-      <p>Email Address</p>
+
+          <div th:each=" info: ${userList}">
+              <p th:text="${info.firstName}">First Name</p>
+              <p th:text="${info.middleName}">Middle Name</p>
+              <p th:text="${info.lastName}">Last Name</p>
+              <p th:text="${info.age}">Age</p>
+              <p th:text="${info.phoneNumber}">Phone number</p>
+              <p th:text="${info.email}">email</p>
+          </div>
       <button type="submit">Qr Information</button>
       </form>
   </div>
 
-
-  <h2><a href="/user" th:href="@{/logout}" class="text-white">Logout</a></H2>
 </body>
 </html>

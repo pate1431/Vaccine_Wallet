@@ -20,14 +20,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import com.cloud.vaccinewallet.beans.User;
 import com.cloud.vaccinewallet.repositories.UserRepository;
 import com.cloud.vaccinewallet.repositories.RoleRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -52,7 +49,7 @@ public class HomeController {
     public String userIndex(Model model, Authentication authentication) {
 
         String name = authentication.getName();
-
+        User user= new User();
         List<String> roles = new ArrayList<String>();
 
         for (GrantedAuthority ga: authentication.getAuthorities()) {
@@ -60,8 +57,9 @@ public class HomeController {
         }
         model.addAttribute("name", name);
         model.addAttribute("roles", roles);
-
-        return "user/index";
+     /*   model.addAttribute("userLista", userRepository.findAll());*/
+        model.addAttribute("userList", userRepository.findByUsername(name));
+         return "user/index";
     }
 
     @GetMapping("/login")
@@ -89,18 +87,25 @@ public class HomeController {
         return "user/contact";
     }
 
+
     @GetMapping("/index")
     public String homePage(Model model, Authentication authentication) {
         User user = new User();
+
         user.setUsername(authentication.getName());
         String name = authentication.getName();
+        System.out.println(name);
         model.addAttribute("name", name);
+        model.addAttribute("username", authentication.getName());
+
+        model.addAttribute("userList", userRepository.findByUsername(name));
+
         return "user/index";
     }
 
     @GetMapping("/code")
     public String codePage(Model model) {
-        model.getAttribute("pdfInformation");
+        model.addAttribute("pdfInformation");
         return "user/code";
     }
 
@@ -134,6 +139,32 @@ public class HomeController {
 
 
         return "user/code";
+    }
+
+    @GetMapping("/profile/{name}")
+    public String profilePage(Model model, @PathVariable String name) {
+        model.addAttribute("userList", userRepository.findByUsername(name));
+        return "user/profile";
+    }
+    @PostMapping("/profile/{name}")
+    public String editProfileInfo(Model model,@PathVariable String name ,@RequestParam String firstName,@RequestParam String lastName,
+                                  @RequestParam String middleName, @RequestParam Integer age, @RequestParam String email,
+                                  @RequestParam Long phoneNumber)
+    {
+
+        List<User> userList= userRepository.findAll();
+        User user = userRepository.findByUsername(name);
+
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setMiddleName(middleName);
+        user.setPhoneNumber(phoneNumber);
+        user.setAge(age);
+        user.setEmail(email);
+        userRepository.save(user);
+        model.addAttribute("user", new User());
+        model.addAttribute("userList", userRepository.findByUsername(name));
+        return "user/index";
     }
 
 

@@ -1,6 +1,6 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
-    background-color: black;
+    background: -webkit-linear-gradient(-135deg, #c850c0, #4158d0);
 }
 
 * {

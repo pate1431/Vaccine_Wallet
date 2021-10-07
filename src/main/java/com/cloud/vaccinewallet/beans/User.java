@@ -41,7 +41,7 @@ public class User {
     }
 
     //User Information
-    @NonNull
+  /*  @NonNull
     private String firstName;
     @NonNull
     private String lastName;
@@ -53,7 +53,7 @@ public class User {
     private Integer age;
     @NonNull
     private String email;
-
+*/
    
 
 

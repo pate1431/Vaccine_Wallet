@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Welcome</title>
     <link rel="stylesheet" type="text/css" media="all"
-          href="../../static/js/css/index.css"/>
+          href="../../static/js/css/index.css" th:href="@{../js/css/index.css}"/>
 
 </head>
 <body>
@@ -17,6 +17,20 @@
       <li style="float: right"><a href="#about">About</a></li>
   </ul>
   <h2>Welcome To The Vaccine Wallet Application</h2>
+
+  <br><br>
+  <h2 style="text-align:center">User Profile Card</h2>
+
+  <div class="card">
+      <form th:action="@{code}">
+      <h1 th:text = "${name}">name for the user</h1>
+      <p>Full Name</p>
+      <p>Age</p>
+      <p>Phone number</p>
+      <p>Email Address</p>
+      <button type="submit">Qr Information</button>
+      </form>
+  </div>
 
 
   <h2><a href="/user" th:href="@{/logout}" class="text-white">Logout</a></H2>

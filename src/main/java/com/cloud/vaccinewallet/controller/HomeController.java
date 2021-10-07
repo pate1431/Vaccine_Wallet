@@ -90,7 +90,11 @@ public class HomeController {
     }
 
     @GetMapping("/index")
-    public String homePage() {
+    public String homePage(Model model, Authentication authentication) {
+        User user = new User();
+        user.setUsername(authentication.getName());
+        String name = authentication.getName();
+        model.addAttribute("name", name);
         return "user/index";
     }
 
@@ -113,7 +117,7 @@ public class HomeController {
     }
     @PostMapping(value = "/generateQR",  consumes = "multipart/form-data")
     public String generateQR(Model model, @RequestParam(value="vacfile") MultipartFile vacfile) throws IOException, WriterException {
-        String path= "C:\\Users\\Sn3haL\\Downloads\\code.png";
+        String path= "C:\\Users\\om patel\\Downloads\\code.png";
 
         PDDocument document = PDDocument.load(vacfile.getBytes());
         PDFTextStripper pdfStripper = new PDFTextStripper();

@@ -1,26 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Welcome</title>
     <link rel="stylesheet" type="text/css" media="all"
-          href="../../static/js/css/index.css"/>
+          href="../../static/js/css/upload.css" th:href="@{../js/css/upload.css}"/>
 
 </head>
 <body>
 
 <ul>
     <li><a class="active" href="index.html" th:href="@{/index}">Home</a></li>
-    <li><a href="upload.html"  th:href="@{/upload}"> Upload Documents</a></li>
+    <li><a href="upload.html" th:href="@{/upload}"> Upload Documents</a></li>
     <li><a href="code.html" th:href="@{/code}">Qr-Code Information</a></li>
     <li><a href="contact.html" th:href="@{/contact}">Contact</a></li>
     <li style="float: right"><a href="#about">About</a></li>
 </ul>
-<div class="container">
+
+<div class="card">
 <form method="post" enctype="multipart/form-data" th:action="@{/generateQR}">
+    <img src="../../static/js/image/upload.png" th:src="@{../js/image/upload.png}" alt="Avatar" class="avatar"><br>
     <label>Upload Document</label>
     <input type="file" name="vacfile" >
-    <input type="submit" value="Generate QR">
+    <button type="submit" value="Generate QR">Generate QR</button>
 </form>
 </div>
 <h2><a href="/user" th:href="@{/logout}" class="text-white">Logout</a></H2>

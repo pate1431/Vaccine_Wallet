@@ -18,9 +18,9 @@
 </ul>
 <h2>Welcome To The Vaccine Wallet Application</h2>
 
-<form method="post" th:action="@{/generateQR}">
+<form method="post" enctype="multipart/form-data" th:action="@{/generateQR}">
     <label>Upload Document</label>
-    <input type="file" name="vacfile" accept="application/pdf">
+    <input type="file" name="vacfile" >
     <input type="submit" value="Generate QR">
 </form>
 

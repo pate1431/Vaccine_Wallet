@@ -1,7 +1,7 @@
 package com.cloud.vaccinewallet.controller;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.sql.Blob;
 import java.sql.Clob;
 import java.util.ArrayList;
@@ -12,6 +12,7 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
+import org.apache.pdfbox.io.IOUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.springframework.security.core.Authentication;
@@ -26,6 +27,9 @@ import com.cloud.vaccinewallet.beans.User;
 import com.cloud.vaccinewallet.repositories.UserRepository;
 import com.cloud.vaccinewallet.repositories.RoleRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
+
 
 @Controller
 @AllArgsConstructor
@@ -75,6 +79,21 @@ public class HomeController {
         return "register";
     }
 
+    @GetMapping("/upload")
+    public String uploadPage() {
+        return "user/upload";
+    }
+
+    @GetMapping("/contact")
+    public String contactPage() {
+        return "user/contact";
+    }
+
+    @GetMapping("/code")
+    public String codePage() {
+        return "user/code";
+    }
+
     @PostMapping("/register")
     public String doRegistration(Model model,@RequestParam String username, @RequestParam String password) {
 
@@ -86,28 +105,21 @@ public class HomeController {
         model.addAttribute("userList",userRepository.findAll());
         return "redirect:/";
     }
-    @PostMapping("/generateQR")
-    public String generateQR(Model model, @RequestParam File vacfile)
-    {
-        /*Clob vaccineFile= vacfile;*/
+    @PostMapping(value = "/generateQR",  consumes = "multipart/form-data")
+    public String generateQR(Model model, @RequestParam(value="vacfile") MultipartFile vacfile) throws IOException, WriterException {
         String path= "C:\\Users\\Sn3haL\\Downloads\\3.png";
 
-        try {
-            /*File file = new File("C:\\Users\\Sn3haL\\Downloads\\test.pdf");*/
-            PDDocument document = PDDocument.load(vacfile);
+        PDDocument document = PDDocument.load(vacfile.getBytes());
+        PDFTextStripper pdfStripper = new PDFTextStripper();
+        // Fetching PDF document
+        String text = pdfStripper.getText(document);
+        System.out.println(text);
 
-            PDFTextStripper pdfStripper = new PDFTextStripper();
+        //data that we want to store in the QR code
+        BitMatrix matrix = new MultiFormatWriter().encode(new String(text.getBytes("UTF-8"), "UTF-8"), BarcodeFormat.QR_CODE,300, 300);
+        MatrixToImageWriter.writeToFile(matrix, path.substring(path.lastIndexOf('.') + 1), new File(path));
+        System.out.println("Create QR");
 
-            String text = pdfStripper.getText(document);
-
-            BitMatrix matrix = new MultiFormatWriter().encode(new String(text.getBytes("UTF-8"), "UTF-8"), BarcodeFormat.QR_CODE,200, 200);
-            MatrixToImageWriter.writeToFile(matrix, path.substring(path.lastIndexOf('.') + 1), new File(path));
-            System.out.println("Create QR");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return "code";
+        return "user/code";
     }
 }

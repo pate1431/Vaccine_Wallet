@@ -1,11 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
     <title>Welcome</title>
-    <link rel="stylesheet" type="text/css" media="all"
-          href="../../static/js/css/index.css"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/js/css/index.css}"/>
+    <style>
+        .flex-container {
+            display: flex;
+            background-color: DodgerBlue;
+        }
 
+        .flex-container > div {
+            margin: 10px;
+            padding: 20px;
+            font-size: 30px;
+            overflow: scroll;
+            width: 50%;
+            height: auto;
+        }
+    </style>
 </head>
 <body>
 
@@ -13,13 +26,23 @@
     <li><a class="active" href="index.html" th:href="@{/index}">Home</a></li>
     <li><a href="upload.html"  th:href="@{/upload}"> Upload Documents</a></li>
     <li><a href="code.html" th:href="@{/code}">Qr-Code Information</a></li>
+    <li><a href="profile.html" th:href="@{'/profile/'+${name}}">Edit Profile</a></li>
     <li><a href="contact.html" th:href="@{/contact}">Contact</a></li>
-    <li style="float: right"><a href="#about">About</a></li>
+    <li style="float: right"><a href="/user" th:href="@{/logout}" class="text-white">Logout</a></li>
 </ul>
+
 <h2>Welcome To The Vaccine Wallet Application</h2>
-<h3>QR CODE</h3>
 
+<div class="flex-container">
+    <div id="code">
+        <img th:src="@{/js/image/code.png}"  alt="Code"/>
+    </div>
+    <div id="info">
+        <p th:text="${pdfInformation}">
+          Info
+        </p>
+    </div>
+</div>
 
-<h2><a href="/user" th:href="@{/logout}" class="text-white">Logout</a></H2>
 </body>
 </html>

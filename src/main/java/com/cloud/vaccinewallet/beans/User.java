@@ -17,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@RequiredArgsConstructor
 @Builder
 @Entity
 public class User {
@@ -33,6 +32,12 @@ public class User {
     private Byte enabled;
     @Lob
     private Blob qr;
+
+    public User(@NonNull String username,@NonNull String encryptedPassword, Byte enabled) {
+        this.username = username;
+        this.encryptedPassword=encryptedPassword;
+        this.enabled=enabled;
+    }
 
     //User Information
     @NonNull

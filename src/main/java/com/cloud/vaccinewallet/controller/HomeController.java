@@ -61,6 +61,22 @@ public class HomeController {
         model.addAttribute("userList", userRepository.findByUsername(name));
          return "user/index";
     }
+    @GetMapping("/admin")
+    public String adminIndex(Model model, Authentication authentication) {
+
+        String name = authentication.getName();
+        User user= new User();
+        List<String> roles = new ArrayList<String>();
+
+        for (GrantedAuthority ga: authentication.getAuthorities()) {
+            roles.add(ga.getAuthority());
+        }
+        model.addAttribute("name", name);
+        model.addAttribute("roles", roles);
+        /*   model.addAttribute("userLista", userRepository.findAll());*/
+        model.addAttribute("userList", userRepository.findByUsername(name));
+        return "admin/index";
+    }
 
     @GetMapping("/login")
     public String login() {
@@ -87,6 +103,7 @@ public class HomeController {
         return "user/contact";
     }
 
+//show index in user on load
 
     @GetMapping("/index")
     public String homePage(Model model, Authentication authentication) {
@@ -94,7 +111,7 @@ public class HomeController {
 
         user.setUsername(authentication.getName());
         String name = authentication.getName();
-        System.out.println(name);
+
         model.addAttribute("name", name);
         model.addAttribute("username", authentication.getName());
 
@@ -102,6 +119,20 @@ public class HomeController {
 
         return "user/index";
     }
+    /*@GetMapping("/index")
+    public String homePageAdmin(Model model, Authentication authentication) {
+        User user = new User();
+
+        user.setUsername(authentication.getName());
+        String name = authentication.getName();
+
+        model.addAttribute("name", name);
+        model.addAttribute("username", authentication.getName());
+
+        model.addAttribute("userList", userRepository.findByUsername(name));
+
+        return "admin/index";
+    }*/
 
     @GetMapping("/code")
     public String codePage(Model model) {
@@ -131,7 +162,8 @@ public class HomeController {
         System.out.println(text);
 
         //data that we want to store in the QR code
-        BitMatrix matrix = new MultiFormatWriter().encode(new String(text.getBytes("UTF-8"), "UTF-8"), BarcodeFormat.QR_CODE,300, 300);
+        BitMatrix matrix = new MultiFormatWriter().encode(new String(text.getBytes("UTF-8"),
+                "UTF-8"), BarcodeFormat.QR_CODE,300, 300);
         MatrixToImageWriter.writeToFile(matrix, path.substring(path.lastIndexOf('.') + 1), new File(path));
         System.out.println("Create QR");
 

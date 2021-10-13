@@ -29,8 +29,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         com.cloud.vaccinewallet.beans.User user = userRepository.findByUsername(username);
 
         // If the user doesn't exist throw an exception
-        if (user == null) {
+        if (user == null ) {
             System.out.println("User not found:" + username);
+            throw new UsernameNotFoundException("User " + username + " was not found in the database");
+        }
+        if (user.getEnabled()==false ) {
+            System.out.println("User access DENIED" + username);
             throw new UsernameNotFoundException("User " + username + " was not found in the database");
         }
 

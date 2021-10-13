@@ -10,36 +10,14 @@
 <body>
 
   <ul>
-      <li><a class="active" href="index.html" th:href="@{/index}">Home</a></li>
-      <li><a href="upload.html"  th:href="@{/upload}"> Upload Documents</a></li>
-      <li><a href="code.html" th:href="@{/code}">Qr-Code Information</a></li>
-      <li><a href="profile.html" th:href="@{'/profile/'+${name}}">Edit Profile</a></li>
-      <li><a href="contact.html" th:href="@{/contact}">Contact</a></li>
+      <li><a class="active" href="index.html" th:href="@{/admin/index}">Home</a></li>
+      <li><a href="database.html" th:href="@{'/admin/database/'+${name}}">Database</a></li>
       <li style="float: right"><a href="/user" th:href="@{/logout}" class="text-white">Logout</a></li>
   </ul>
-  <h2>Welcome To The Vaccine Wallet Application</h2>
+  <h2>Welcome To The Vaccine Wallet Application Admin</h2>
 
-  <br><br>
-  <h2 style="text-align:center">User Profile Card</h2>
+  <h1>Hello ADMIN</h1>
 
-  <h1>Hello Admin </h1>
-
-  <!--<div class="card">
-      <form th:action="@{code}">
-          <label>Usename: </label>
-      <h1 th:text = "${name}">name for the user</h1>
-
-          <div th:each=" info: ${userList}">
-              <p th:text="${info.firstName}">First Name</p>
-              <p th:text="${info.middleName}">Middle Name</p>
-              <p th:text="${info.lastName}">Last Name</p>
-              <p th:text="${info.age}">Age</p>
-              <p th:text="${info.phoneNumber}">Phone number</p>
-              <p th:text="${info.email}">email</p>
-          </div>
-      <button type="submit">Qr Information</button>
-      </form>
-  </div>-->
 
 </body>
 </html>

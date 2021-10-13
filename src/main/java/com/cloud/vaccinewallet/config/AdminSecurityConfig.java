@@ -12,18 +12,20 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+@Configuration
 @EnableWebSecurity
-@Order(2)
-public class SecurityConfig extends WebSecurityConfigurerAdapter{
+@Order(1)
+public class AdminSecurityConfig extends WebSecurityConfigurerAdapter{
 
     @Autowired
-    private LoggingAccessDeniedHandler accessDeniedHandler;
+    private LoggingAccessDeniedHandler accessDeniedHandlerAdmin;
 
     @Autowired
-    UserDetailsServiceImpl userDetailsService;
+    UserDetailsServiceImpl userDetailsServiceAdmin;
+
 
     @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
+    public BCryptPasswordEncoder passwordEncoderAdmin() {
         return new BCryptPasswordEncoder();
     }
 
@@ -33,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         http.headers().frameOptions().disable();
 
         http.authorizeRequests()
-                .antMatchers("/user/**").hasRole("USER")
+                .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.POST, "/register").permitAll()
                 .antMatchers("/","/css/**","static/**","/image/**", "/js/**", "/**")
                 .permitAll()
@@ -49,10 +51,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .logoutSuccessUrl("/login?logout").permitAll()
                 .and()
                 .exceptionHandling()
-                .accessDeniedHandler(accessDeniedHandler);
+                .accessDeniedHandler(accessDeniedHandlerAdmin);
     }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception{
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());}
+        auth.userDetailsService(userDetailsServiceAdmin).passwordEncoder(passwordEncoderAdmin());}
 }

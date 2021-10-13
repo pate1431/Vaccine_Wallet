@@ -29,11 +29,11 @@ public class User {
     @NonNull
     private String encryptedPassword;
     @NonNull
-    private Byte enabled;
+    private Boolean enabled;
     @Lob
     private Blob qr;
 
-    public User(@NonNull String username,@NonNull String encryptedPassword, Byte enabled) {
+    public User(@NonNull String username,@NonNull String encryptedPassword, Boolean enabled) {
         this.username = username;
         this.encryptedPassword=encryptedPassword;
         this.enabled=enabled;

@@ -53,7 +53,24 @@ public class HomeController {
     * */
 
     @GetMapping("/user")
-    public String userIndex(Model model, Authentication authentication) {
+    public String userIndex(Model model, Authentication authenticationUser) {
+
+        String name = authenticationUser.getName();
+
+        User user= new User();
+        List<String> roles = new ArrayList<String>();
+
+        for (GrantedAuthority ga: authenticationUser.getAuthorities()) {
+            roles.add(ga.getAuthority());
+        }
+
+        model.addAttribute("name", name);
+        model.addAttribute("roles", roles);
+        model.addAttribute("userList", userRepository.findByUsername(name));
+         return "user/index";
+    }
+    @GetMapping("/admin")
+    public String adminIndex(Model model, Authentication authentication) {
 
         String name = authentication.getName();
         User user= new User();
@@ -64,11 +81,10 @@ public class HomeController {
         }
         model.addAttribute("name", name);
         model.addAttribute("roles", roles);
-     /*   model.addAttribute("userLista", userRepository.findAll());*/
         model.addAttribute("userList", userRepository.findByUsername(name));
-         return "user/index";
+        model.addAttribute("userData", userRepository.findAll());
+        return "admin/index";
     }
-
 
 
     @GetMapping("/login")
@@ -104,23 +120,7 @@ public class HomeController {
      *   LOGIN CONTROLLER FOR ADMIN
      * */
 
-    @GetMapping("/admin")
-    public String adminIndex(Model model, Authentication authentication) {
 
-        String name = authentication.getName();
-        User user= new User();
-        List<String> roles = new ArrayList<String>();
-
-        for (GrantedAuthority ga: authentication.getAuthorities()) {
-            roles.add(ga.getAuthority());
-        }
-
-        model.addAttribute("name", name);
-        model.addAttribute("roles", roles);
-        model.addAttribute("userList", userRepository.findByUsername(name));
-        model.addAttribute("userData", userRepository.findAll());
-        return "admin/index";
-    }
     @GetMapping("/admin/index")
     public String adminIndexLoad(Model model,Authentication authentication)
     {
@@ -158,7 +158,7 @@ public class HomeController {
     }
 //show index in user on load
 
-    @GetMapping("/index")
+    @GetMapping("user/index")
     public String homePage(Model model, Authentication authentication) {
         User user = new User();
 

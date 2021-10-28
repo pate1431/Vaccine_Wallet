@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+
 @RestController
 @RequestMapping("/storage/")
 public class BucketController {
@@ -17,8 +19,8 @@ public class BucketController {
     }
 
     @PostMapping("/uploadFile")
-    public String uploadFile(@RequestPart(value = "file") MultipartFile file) {
-        return this.amazonClient.uploadFile(file);
+    public String uploadFile(@RequestPart(value = "file") File file, String name) {
+        return this.amazonClient.uploadFile(file, name);
     }
 
     @DeleteMapping("/deleteFile")

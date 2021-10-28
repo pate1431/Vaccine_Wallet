@@ -7,6 +7,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.cloud.vaccinewallet.beans.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,12 +37,13 @@ public class AmazonClient {
         this.s3client = new AmazonS3Client(credentials);
     }
 
-    public String uploadFile(MultipartFile multipartFile) {
+    public String uploadFile(File file, String name) {
+        User user = new User();
         String fileUrl = "";
         try {
-            File file = convertMultiPartToFile(multipartFile);
-            String fileName = generateFileName(multipartFile);
-            fileUrl = endpointUrl + "/" + bucketName + "/" + fileName;
+//            File file = convertMultiPartToFile(multipartFile);
+            String fileName = name + ".jpg";
+            fileUrl = endpointUrl + "/" + bucketName + "/" + name;
             uploadFileTos3bucket(fileName, file);
             file.delete();
         } catch (Exception e) {

@@ -7,6 +7,7 @@ import java.sql.Clob;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.cloud.vaccinewallet.beans.Email;
 import com.cloud.vaccinewallet.beans.Role;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
@@ -30,13 +31,15 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
-
+//username: vwallet475@gmail.com
+//password: capstone1234
 @Controller
 @AllArgsConstructor
 public class HomeController {
 
     private UserRepository userRepository;
     private RoleRepository roleRepository;
+    private Email e;
 
     private String encodePassword(String password) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -45,6 +48,8 @@ public class HomeController {
 
     @GetMapping("/")
     public String index() {
+
+
         return "index";
     }
 
@@ -140,10 +145,17 @@ public class HomeController {
 
         if(user.getEnabled()==true)
         {
+
             user.setEnabled(false);
+            e.sendEmail(user.getUsermail(),
+                    "VaccineWallet", "Sorry your account access for the vaccine wallet application has been blocked");
+
         }
         else{
             user.setEnabled(true);
+            e.sendEmail(user.getUsermail(),
+                    "VaccineWallet", "Else");
+
         }
         userRepository.save(user);
         model.addAttribute("userData",userRepository.findAll());
@@ -180,13 +192,18 @@ public class HomeController {
     }
 
     @PostMapping("/register")
-    public String doRegistration(Model model,@RequestParam String username, @RequestParam String password) {
+    public String doRegistration(Model model,@RequestParam String username, @RequestParam String password, @RequestParam String usermail)
+    {
 
 
-        User user= new User(username, encodePassword(password), Boolean.valueOf("1"));
+        User user= new User(username, encodePassword(password),usermail, Boolean.valueOf("1"));
         user.getRoles().add(roleRepository.findByRolename("ROLE_USER"));
-
+        user.setEnabled(true);
         userRepository.save(user);
+
+        e.sendEmail(user.getUsermail(),
+                "VaccineWallet", "Account Created");
+
         model.addAttribute("userList",userRepository.findAll());
         return "redirect:/";
     }

@@ -156,14 +156,14 @@ public class HomeController {
         {
 
             user.setEnabled(false);
-            e.sendEmail(user.getUsermail(),
+            e.sendEmail(user.getEmail(),
                     "VaccineWallet", "Sorry your account access for the vaccine wallet application has been blocked");
 
         }
         else{
             user.setEnabled(true);
-            e.sendEmail(user.getUsermail(),
-                    "VaccineWallet", "Else");
+            e.sendEmail(user.getEmail(),
+                    "VaccineWallet", "You account access has been approved sorry for the inconnvennce");
 
         }
         userRepository.save(user);
@@ -211,7 +211,7 @@ public class HomeController {
         user.setEnabled(true);
         userRepository.save(user);
 
-        e.sendEmail(user.getUsermail(),
+        e.sendEmail(user.getEmail(),
                 "VaccineWallet", "Account Created");
 
         model.addAttribute("userList",userRepository.findAll());

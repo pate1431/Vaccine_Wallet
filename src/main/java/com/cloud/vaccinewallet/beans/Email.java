@@ -17,6 +17,7 @@ public class Email {
         msg.setSubject(subject);
         msg.setText(text);
         try {
+            System.out.println(msg);
             javaMailSender.send(msg);
             System.out.println("Mail ID Correct");
         } catch (Exception e) {

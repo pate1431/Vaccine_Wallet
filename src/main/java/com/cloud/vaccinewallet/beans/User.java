@@ -27,14 +27,17 @@ public class User {
     @NonNull
     private String username;
     @NonNull
+    private String usermail;
+    @NonNull
     private String encryptedPassword;
     @NonNull
     private Boolean enabled;
     @Lob
     private Blob qr;
 
-    public User(@NonNull String username,@NonNull String encryptedPassword, Boolean enabled) {
+    public User(@NonNull String username,@NonNull String encryptedPassword,@NonNull String usermail, Boolean enabled) {
         this.username = username;
+        this.usermail = usermail;
         this.encryptedPassword=encryptedPassword;
         this.enabled=enabled;
     }

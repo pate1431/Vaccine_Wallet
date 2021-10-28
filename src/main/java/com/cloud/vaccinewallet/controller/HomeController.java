@@ -194,10 +194,11 @@ public class HomeController {
         return "user/index";
     }
 
-    @GetMapping("/code")
+    @GetMapping("user/code")
     public String codePage(Model model) {
-
-        //model.addAttribute("pdfInformation");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("userName",auth.getName());
+        model.addAttribute("pdfInformation");
         return "user/code";
     }
 
@@ -246,7 +247,7 @@ public class HomeController {
 
         User user = userRepository.findByUsername(auth.getName());
 
-
+        model.addAttribute("userName",auth.getName());
         model.addAttribute("pdfInformation", text);
         return "user/code";
     }

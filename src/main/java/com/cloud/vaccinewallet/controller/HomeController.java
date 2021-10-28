@@ -1,25 +1,27 @@
 package com.cloud.vaccinewallet.controller;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.sql.Blob;
-import java.sql.Clob;
 import java.util.ArrayList;
 import java.util.List;
 
+
+import com.cloud.vaccinewallet.amazon.AmazonClient;
+
 import com.cloud.vaccinewallet.beans.Email;
 import com.cloud.vaccinewallet.beans.Role;
+
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
-import org.apache.pdfbox.io.IOUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,15 +30,22 @@ import com.cloud.vaccinewallet.beans.User;
 import com.cloud.vaccinewallet.repositories.UserRepository;
 import com.cloud.vaccinewallet.repositories.RoleRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+
+
+import javax.imageio.ImageIO;
+import javax.imageio.stream.ImageInputStream;
+
+
 
 //username: vwallet475@gmail.com
 //password: capstone1234
+
 @Controller
 @AllArgsConstructor
 public class HomeController {
 
+    private AmazonClient amazonClient;
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     private Email e;
@@ -187,7 +196,8 @@ public class HomeController {
 
     @GetMapping("/code")
     public String codePage(Model model) {
-        model.addAttribute("pdfInformation");
+
+        //model.addAttribute("pdfInformation");
         return "user/code";
     }
 
@@ -221,9 +231,21 @@ public class HomeController {
 
         //data that we want to store in the QR code
         BitMatrix matrix = new MultiFormatWriter().encode(new String(text.getBytes("UTF-8"),
-                "UTF-8"), BarcodeFormat.QR_CODE,300, 300);
-        MatrixToImageWriter.writeToFile(matrix, path.substring(path.lastIndexOf('.') + 1), new File(path));
-        System.out.println("Create QR");
+                "UTF-8"), BarcodeFormat.QR_CODE,500, 500);
+
+          ByteArrayOutputStream bos = new ByteArrayOutputStream();
+          BufferedImage bimg = MatrixToImageWriter.toBufferedImage(matrix);
+
+          Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+          File file = new File("C:\\Users\\Sn3haL\\Downloads\\" + auth.getName() + ".png");
+          ImageIO.write(bimg, "jpg", file);
+
+          amazonClient.uploadFile(file, auth.getName());
+          System.out.println("Create QR");
+
+        User user = userRepository.findByUsername(auth.getName());
+
 
         model.addAttribute("pdfInformation", text);
         return "user/code";

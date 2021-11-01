@@ -2,7 +2,7 @@
 <html lang="en"  xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Edit Personal Information</title>
     <link rel="stylesheet" type="text/css" media="all"
           href="../../static/js/css/index.css" th:href="@{../js/css/index.css}"/>
 </head>
@@ -17,21 +17,21 @@
 </ul>
 
 <div>
-    <form name="form" method="post" th:action="@{'/profile/'+${name}}">
+    <form name="form" method="post" th:action="@{'/profile/'+${name}}" th:each=" info: ${userList}">
         <Label> First Name: </Label>
-        <input type="text" name="firstName" placeholder="Enter First Name">
+        <input type="text" name="firstName" th:value="${info.firstName}" placeholder="Enter First Name" maxlength="30">
         <Label> Middle Name </Label>
-        <input type="text" name="middleName" placeholder="Enter Middle Name">
+        <input type="text" name="middleName" th:value="${info.middleName}" placeholder="Enter Middle Name" maxlength="30">
         <Label> Last Name </Label>
-        <input type="text" name="lastName" placeholder="Enter Last Name">
+        <input type="text" name="lastName" th:value="${info.lastName}" placeholder="Enter Last Name" maxlength="30">
         <Label> Age: </Label>
-        <input type="number" name="age" placeholder="Enter Age">
+        <input type="number" name="age" th:value="${info.age}" placeholder="Enter Age" min="12" maxlength="3">
+        <Label> Phone Number: </Label>
+        <input type="number" name="phoneNumber" th:value="${info.phoneNumber}" placeholder="Enter Phone Number" maxlength="10">
         <Label> Email: </Label>
-        <input type="number" name="phoneNumber" placeholder="Enter Phone Number">
-        <Label> Email: </Label>
-        <input type="text" name="email" placeholder="Enter Email">
+        <input type="text" name="email" th:value="${info.email}" placeholder="Enter Email">
 
-        <input type="submit" value="Add">
+        <input type="submit" value="Confirm Changes">
     </form>
 </div>
 

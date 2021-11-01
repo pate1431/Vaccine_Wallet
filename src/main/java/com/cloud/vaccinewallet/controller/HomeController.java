@@ -1,6 +1,5 @@
 package com.cloud.vaccinewallet.controller;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
@@ -10,7 +9,6 @@ import java.util.List;
 import com.cloud.vaccinewallet.amazon.AmazonClient;
 
 import com.cloud.vaccinewallet.beans.Email;
-import com.cloud.vaccinewallet.beans.Role;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
@@ -34,7 +32,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageInputStream;
 
 
 
@@ -45,61 +42,24 @@ import javax.imageio.stream.ImageInputStream;
 @AllArgsConstructor
 public class HomeController {
 
+    /*
+    * Declaration of all Private Variables
+    */
     private AmazonClient amazonClient;
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     private Email e;
 
+    /*
+    * Method encode string password to BCrypt
+    * */
     private String encodePassword(String password) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         return encoder.encode(password);
     }
 
     @GetMapping("/")
-    public String index() {
-
-
-        return "index";
-    }
-
-    /*
-    *   LOGIN CONTROLLER FOR USER
-    * */
-
-    @GetMapping("/user")
-    public String userIndex(Model model, Authentication authenticationUser) {
-
-        String name = authenticationUser.getName();
-
-        User user= new User();
-        List<String> roles = new ArrayList<String>();
-
-        for (GrantedAuthority ga: authenticationUser.getAuthorities()) {
-            roles.add(ga.getAuthority());
-        }
-
-        model.addAttribute("name", name);
-        model.addAttribute("roles", roles);
-        model.addAttribute("userList", userRepository.findByUsername(name));
-         return "user/index";
-    }
-    @GetMapping("/admin")
-    public String adminIndex(Model model, Authentication authentication) {
-
-        String name = authentication.getName();
-        User user= new User();
-        List<String> roles = new ArrayList<String>();
-
-        for (GrantedAuthority ga: authentication.getAuthorities()) {
-            roles.add(ga.getAuthority());
-        }
-        model.addAttribute("name", name);
-        model.addAttribute("roles", roles);
-        model.addAttribute("userList", userRepository.findByUsername(name));
-        model.addAttribute("userData", userRepository.findAll());
-        return "admin/index";
-    }
-
+    public String index() { return "index";}
 
     @GetMapping("/login")
     public String login() {
@@ -124,6 +84,46 @@ public class HomeController {
     @GetMapping("/contact")
     public String contactPage() {
         return "user/contact";
+    }
+
+    /*
+     *   LOGIN CONTROLLER FOR USER
+     * */
+
+    @GetMapping("/user")
+    public String userIndex(Model model, Authentication authenticationUser) {
+
+        String name = authenticationUser.getName();
+
+        User user= new User();
+        List<String> roles = new ArrayList<String>();
+
+        for (GrantedAuthority ga: authenticationUser.getAuthorities()) {
+            roles.add(ga.getAuthority());
+        }
+
+        model.addAttribute("name", name);
+        model.addAttribute("roles", roles);
+        model.addAttribute("userList", userRepository.findByUsername(name));
+        return "user/index";
+    }
+
+
+    @GetMapping("/admin")
+    public String adminIndex(Model model, Authentication authentication) {
+
+        String name = authentication.getName();
+        User user= new User();
+        List<String> roles = new ArrayList<String>();
+
+        for (GrantedAuthority ga: authentication.getAuthorities()) {
+            roles.add(ga.getAuthority());
+        }
+        model.addAttribute("name", name);
+        model.addAttribute("roles", roles);
+        model.addAttribute("userList", userRepository.findByUsername(name));
+        model.addAttribute("userData", userRepository.findAll());
+        return "admin/index";
     }
 
 
@@ -177,6 +177,8 @@ public class HomeController {
         model.addAttribute("userData",userRepository.findAll());
         return "admin/database";
     }
+
+
 //show index in user on load
 
     @GetMapping("user/index")
@@ -221,8 +223,8 @@ public class HomeController {
 
     @PostMapping(value = "/generateQR",  consumes = "multipart/form-data")
     public String generateQR(Model model, @RequestParam(value="vacfile") MultipartFile vacfile) throws IOException, WriterException {
-        String path= "C:\\Users\\Sn3haL\\Downloads\\code.png";
-
+       /* String path= "C:\\Users\\Sn3haL\\Downloads\\code.png";
+*/
         PDDocument document = PDDocument.load(vacfile.getBytes());
         PDFTextStripper pdfStripper = new PDFTextStripper();
 
@@ -259,9 +261,13 @@ public class HomeController {
     * */
     @GetMapping("/profile/{name}")
     public String profilePage(Model model, @PathVariable String name) {
+        User user= userRepository.findByUsername(name);
         model.addAttribute("userList", userRepository.findByUsername(name));
         return "user/profile";
     }
+
+
+
 
     /*
      *
@@ -289,5 +295,33 @@ public class HomeController {
         return "user/index";
     }
 
+    @GetMapping("/changeUserPass/{name}")
+    public String changeSigningInfo(Model model, @PathVariable String name) {
+        model.addAttribute("userList", userRepository.findByUsername(name));
+        return "user/changeUserPass";
+
+    }
+
+    @PostMapping("/changePass/{name}")
+    public String editProfilePassword(Model model,@PathVariable String name ,
+                                      @RequestParam String username,@RequestParam String password) {
+
+        List<User> userList = userRepository.findAll();
+        if (name.equals(username)) {
+            User user = userRepository.findByUsername(username);
+            System.out.println(password);
+            System.out.println(encodePassword(password));
+            user.setEncryptedPassword(encodePassword(password));
+
+            userRepository.save(user);
+            model.addAttribute("user", new User());
+            model.addAttribute("userList", userRepository.findByUsername(name));
+            return "user/index";
+        }
+        else{
+            return "user/changeUserPass";
+        }
+
+    }
 
 }

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Signing Info</title>
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../static/js/css/index.css" th:href="@{../js/css/index.css}"/>
+
+</head>
+<body>
+
+<ul>
+    <li><a class="active" href="index.html" th:href="@{/user/index}">Home</a></li>
+    <li><a href="upload.html"  th:href="@{/upload}"> Upload Documents</a></li>
+    <li><a href="code.html" th:href="@{/user/code}">Qr-Code Information</a></li>
+    <li><a href="profile.html" th:href="@{'/profile/'+${name}}">Edit Profile</a></li>
+    <li><a href="changeUserPass.html" th:href="@{'/changeUserPass/'+${name}}">Edit Username/Password</a></li>
+    <li><a href="contact.html" th:href="@{/contact}">Contact</a></li>
+    <li style="float: right"><a href="/user" th:href="@{/logout}" class="text-white">Logout</a></li>
+</ul>
+
+<div>
+    <form name="form" method="post" th:action="@{'/changePass/'+${name}}">
+        <span th:value="warning"></span>
+        <Label> Username: </Label>
+        <input type="text" name="username" placeholder="Enter Username">
+        <Label> New Password: </Label>
+        <input type="password" name="password" placeholder="Enter New Password">
+
+        <input type="submit" value="Change Password">
+    </form>
+</div>
+
+</body>
+</html>

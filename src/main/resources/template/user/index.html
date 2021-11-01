@@ -14,6 +14,7 @@
       <li><a href="upload.html"  th:href="@{/upload}"> Upload Documents</a></li>
       <li><a href="code.html" th:href="@{/user/code}">Qr-Code Information</a></li>
       <li><a href="profile.html" th:href="@{'/profile/'+${name}}">Edit Profile</a></li>
+      <li><a href="changeUserPass.html" th:href="@{'/changeUserPass/'+${name}}">Edit Username/Password</a></li>
       <li><a href="contact.html" th:href="@{/contact}">Contact</a></li>
       <li style="float: right"><a href="/user" th:href="@{/logout}" class="text-white">Logout</a></li>
   </ul>
@@ -35,7 +36,7 @@
               <p th:text="${info.phoneNumber}">Phone number</p>
               <p th:text="${info.email}">email</p>
           </div>
-      <button type="submit">Qr Information</button>
+      <button th:href="@{/user/code}" type="submit">Qr Information</button>
       </form>
   </div>
 

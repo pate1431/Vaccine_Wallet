@@ -1,17 +1,18 @@
 package com.cloud.vaccinewallet.controller;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-
 
 import com.cloud.vaccinewallet.amazon.AmazonClient;
 
 import com.cloud.vaccinewallet.beans.Email;
-import com.cloud.vaccinewallet.beans.Role;
 
+import com.cloud.vaccinewallet.beans.VaccineInformation;
+import com.cloud.vaccinewallet.repositories.VaccineInformationRepository;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
@@ -34,8 +35,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import javax.imageio.ImageIO;
-import javax.imageio.stream.ImageInputStream;
-
 
 
 //username: vwallet475@gmail.com
@@ -45,11 +44,18 @@ import javax.imageio.stream.ImageInputStream;
 @AllArgsConstructor
 public class HomeController {
 
+    /*
+     * Declaration of all Private Variables
+     */
     private AmazonClient amazonClient;
     private UserRepository userRepository;
     private RoleRepository roleRepository;
+    private VaccineInformationRepository vaccineInformationRepository;
     private Email e;
 
+    /*
+     * Method encode string password to BCrypt
+     * */
     private String encodePassword(String password) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         return encoder.encode(password);
@@ -57,49 +63,8 @@ public class HomeController {
 
     @GetMapping("/")
     public String index() {
-
-
         return "index";
     }
-
-    /*
-    *   LOGIN CONTROLLER FOR USER
-    * */
-
-    @GetMapping("/user")
-    public String userIndex(Model model, Authentication authenticationUser) {
-
-        String name = authenticationUser.getName();
-
-        User user= new User();
-        List<String> roles = new ArrayList<String>();
-
-        for (GrantedAuthority ga: authenticationUser.getAuthorities()) {
-            roles.add(ga.getAuthority());
-        }
-
-        model.addAttribute("name", name);
-        model.addAttribute("roles", roles);
-        model.addAttribute("userList", userRepository.findByUsername(name));
-         return "user/index";
-    }
-    @GetMapping("/admin")
-    public String adminIndex(Model model, Authentication authentication) {
-
-        String name = authentication.getName();
-        User user= new User();
-        List<String> roles = new ArrayList<String>();
-
-        for (GrantedAuthority ga: authentication.getAuthorities()) {
-            roles.add(ga.getAuthority());
-        }
-        model.addAttribute("name", name);
-        model.addAttribute("roles", roles);
-        model.addAttribute("userList", userRepository.findByUsername(name));
-        model.addAttribute("userData", userRepository.findAll());
-        return "admin/index";
-    }
-
 
     @GetMapping("/login")
     public String login() {
@@ -126,6 +91,38 @@ public class HomeController {
         return "user/contact";
     }
 
+    /*
+     *   LOGIN CONTROLLER FOR USER
+     * */
+
+    @GetMapping("/user")
+    public String userIndex(Model model, Authentication authenticationUser) {
+        String name = authenticationUser.getName();
+        List<String> roles = new ArrayList<String>();
+        for (GrantedAuthority ga : authenticationUser.getAuthorities()) {
+            roles.add(ga.getAuthority());
+        }
+        model.addAttribute("name", name);
+        model.addAttribute("roles", roles);
+        model.addAttribute("userList", userRepository.findByUsername(name));
+        return "user/index";
+    }
+
+
+    @GetMapping("/admin")
+    public String adminIndex(Model model, Authentication authentication) {
+        String name = authentication.getName();
+        List<String> roles = new ArrayList<String>();
+        for (GrantedAuthority ga : authentication.getAuthorities()) {
+            roles.add(ga.getAuthority());
+        }
+        model.addAttribute("name", name);
+        model.addAttribute("roles", roles);
+        model.addAttribute("userList", userRepository.findByUsername(name));
+        model.addAttribute("userData", userRepository.findAll());
+        return "admin/index";
+    }
+
 
 
     /*ADMIN MAPPINGS*/
@@ -136,8 +133,7 @@ public class HomeController {
 
 
     @GetMapping("/admin/index")
-    public String adminIndexLoad(Model model,Authentication authentication)
-    {
+    public String adminIndexLoad(Model model, Authentication authentication) {
         User user = new User();
 
         user.setUsername(authentication.getName());
@@ -148,57 +144,50 @@ public class HomeController {
     }
 
     @GetMapping("/enableDisable/{username}")
-    public String enableDisable(Model model, @PathVariable String username)
-    {
+    public String enableDisable(Model model, @PathVariable String username) {
         User user = userRepository.findByUsername(username);
 
-        if(user.getEnabled()==true)
-        {
-
+        if (user.getEnabled() == true) {
             user.setEnabled(false);
             e.sendEmail(user.getEmail(),
                     "VaccineWallet", "Sorry your account access for the vaccine wallet application has been blocked");
 
-        }
-        else{
+        } else {
             user.setEnabled(true);
             e.sendEmail(user.getEmail(),
                     "VaccineWallet", "You account access has been approved sorry for the inconnvennce");
-
         }
         userRepository.save(user);
-        model.addAttribute("userData",userRepository.findAll());
+        model.addAttribute("userData", userRepository.findAll());
         return "admin/database";
     }
+
     @GetMapping("/admin/database/{name}")
-    public String adminDatabase(Model model,  @PathVariable String name)
-    {
+    public String adminDatabase(Model model, @PathVariable String name) {
         System.out.println(name);
-        model.addAttribute("userData",userRepository.findAll());
+        model.addAttribute("userData", userRepository.findAll());
         return "admin/database";
     }
+
+
 //show index in user on load
 
     @GetMapping("user/index")
     public String homePage(Model model, Authentication authentication) {
         User user = new User();
-
         user.setUsername(authentication.getName());
         String name = authentication.getName();
-
         model.addAttribute("name", name);
         model.addAttribute("username", authentication.getName());
-
         model.addAttribute("userList", userRepository.findByUsername(name));
-
         return "user/index";
     }
 
     @GetMapping("user/code")
     public String codePage(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        model.addAttribute("userName",auth.getName());
-        model.addAttribute("pdfInformation");
+        model.addAttribute("userName", auth.getName());
+        model.addAttribute("vaccineInfo", userRepository.findByUsername(auth.getName()));
         return "user/code";
     }
 
@@ -224,65 +213,105 @@ public class HomeController {
     }
 
     @PostMapping("/register")
-    public String doRegistration(Model model,@RequestParam String username, @RequestParam String password, @RequestParam String usermail)
-    {
-
-
-        User user= new User(username, encodePassword(password),usermail, Boolean.valueOf("1"));
+    public String doRegistration(Model model, @RequestParam String username, @RequestParam String password, @RequestParam String usermail) {
+        User user = new User(username, encodePassword(password), usermail, Boolean.valueOf("1"));
         user.getRoles().add(roleRepository.findByRolename("ROLE_USER"));
         user.setEnabled(true);
         userRepository.save(user);
-
         e.sendEmail(user.getEmail(),
                 "VaccineWallet", "Account Created");
-
-        model.addAttribute("userList",userRepository.findAll());
+        model.addAttribute("userList", userRepository.findAll());
         return "redirect:/";
     }
 
-    @PostMapping(value = "/generateQR",  consumes = "multipart/form-data")
-    public String generateQR(Model model, @RequestParam(value="vacfile") MultipartFile vacfile) throws IOException, WriterException {
-        String path= "C:\\Users\\Sn3haL\\Downloads\\code.png";
+    @PostMapping(value = "/generateQR", consumes = "multipart/form-data")
+    public String generateQR(Model model, @RequestParam(value = "vacfile") MultipartFile vacfile) throws IOException, WriterException {
 
         PDDocument document = PDDocument.load(vacfile.getBytes());
         PDFTextStripper pdfStripper = new PDFTextStripper();
 
         // Fetching PDF document into Text variable
         String text = pdfStripper.getText(document);
-        System.out.println(text);
 
-        //data that we want to store in the QR code
-        BitMatrix matrix = new MultiFormatWriter().encode(new String(text.getBytes("UTF-8"),
-                "UTF-8"), BarcodeFormat.QR_CODE,500, 500);
+/**************************************************************************************************************
+ * Code to Save Vaccine Information
+ *************************************************************************************************************/
 
-          ByteArrayOutputStream bos = new ByteArrayOutputStream();
-          BufferedImage bimg = MatrixToImageWriter.toBufferedImage(matrix);
 
-          Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String[] lines = text.split("\r\n|\r|\n");
 
-          File file = new File("C:\\Users\\Sn3haL\\Downloads\\" + auth.getName() + ".png");
-          ImageIO.write(bimg, "jpg", file);
+        if (lines[0].equals("Ministry of Health") && lines[1].equals("Ministère de la Santé")) {
+            String name = "", date = "", vaccine = "", dose = "";
 
-          amazonClient.uploadFile(file, auth.getName());
-          System.out.println("Create QR");
+            VaccineInformation vaccineInfo = new VaccineInformation();
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            User user = userRepository.findByUsername(auth.getName());
 
-        User user = userRepository.findByUsername(auth.getName());
+            int count = 1;
+            for (String line : lines) {
+                if (count == 3) {
+                    name = line.substring(10);
+                    vaccineInfo.setNameOnVaccine(name);
+                }
+                if (count == 6) {
+                    date = line.substring(0, 11);
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                    LocalDate vacDate = LocalDate.parse(date.trim(), formatter);
+                    vaccineInfo.setVaccineDate(vacDate);
+                }
+                if (count == 8) {
+                    String[] res = line.split(" ");
+                    vaccine = res[4];
+                    vaccineInfo.setVaccineName(vaccine);
+                }
+                if (count == 14) {
+                    String[] res = line.split(" ");
+                    dose = res[3];
+                    vaccineInfo.setNoOfDose(Integer.parseInt(dose));
+                }
 
-        model.addAttribute("userName",auth.getName());
-        model.addAttribute("pdfInformation", text);
-        return "user/code";
+                System.out.println(count + " " + line);
+                count++;
+            }
+            vaccineInformationRepository.save(vaccineInfo);
+            user.setVaccine(vaccineInfo);
+            userRepository.save(user);
+
+            /**************************************************************************************************************
+             * Code to Generate QR
+             *************************************************************************************************************/
+            //data that we want to store in the QR code
+            BitMatrix matrix = new MultiFormatWriter().encode(new String(text.getBytes("UTF-8"),
+                    "UTF-8"), BarcodeFormat.QR_CODE, 500, 500);
+
+
+            BufferedImage bimg = MatrixToImageWriter.toBufferedImage(matrix);
+
+            File file = new File("C:\\Users\\Sn3haL\\Downloads\\" + auth.getName() + ".png");
+            ImageIO.write(bimg, "jpg", file);
+            amazonClient.uploadFile(file, auth.getName());
+
+
+            model.addAttribute("userName", auth.getName());
+            model.addAttribute("vaccineInfo", userRepository.findByUsername(auth.getName()));
+            return "user/code";
+        } else {
+            return "user/upload";
+        }
     }
 
     /*
-    *
-    *   GET MAPPING FOR EDITING PROFILE ON PROFILE PAGE
-    *
-    * */
+     *
+     *   GET MAPPING FOR EDITING PROFILE ON PROFILE PAGE
+     *
+     * */
     @GetMapping("/profile/{name}")
     public String profilePage(Model model, @PathVariable String name) {
+
         model.addAttribute("userList", userRepository.findByUsername(name));
         return "user/profile";
     }
+
 
     /*
      *
@@ -290,6 +319,7 @@ public class HomeController {
      *
      * */
     @PostMapping("/profile/{name}")
+
     public String editProfileInfo(Model model,@PathVariable String name ,@RequestParam String firstName,@RequestParam String lastName,
                                   @RequestParam String middleName, @RequestParam Integer age, @RequestParam String hcNumber,
                                   @RequestParam String address, @RequestParam String postalCode, @RequestParam String city,
@@ -297,7 +327,8 @@ public class HomeController {
                                   @RequestParam Long phoneNumber)
     {
 
-        List<User> userList= userRepository.findAll();
+
+        // List<User> userList= userRepository.findAll();
         User user = userRepository.findByUsername(name);
 
         user.setFirstName(firstName);
@@ -316,4 +347,34 @@ public class HomeController {
         model.addAttribute("userList", userRepository.findByUsername(name));
         return "user/index";
     }
+
+
+    @GetMapping("/changeUserPass/{name}")
+    public String changeSigningInfo(Model model, @PathVariable String name) {
+        model.addAttribute("userList", userRepository.findByUsername(name));
+        return "user/changeUserPass";
+
+    }
+
+    @PostMapping("/changePass/{name}")
+    public String editProfilePassword(Model model, @PathVariable String name,
+                                      @RequestParam String username, @RequestParam String password) {
+
+        /*  List<User> userList = userRepository.findAll();*/
+        if (name.equals(username)) {
+            User user = userRepository.findByUsername(username);
+            System.out.println(password);
+            System.out.println(encodePassword(password));
+            user.setEncryptedPassword(encodePassword(password));
+
+            userRepository.save(user);
+            model.addAttribute("user", new User());
+            model.addAttribute("userList", userRepository.findByUsername(name));
+            return "user/index";
+        } else {
+            return "user/changeUserPass";
+        }
+
+    }
+
 }

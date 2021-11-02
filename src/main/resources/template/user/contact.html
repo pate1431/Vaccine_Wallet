@@ -2,9 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Welcome</title>
+
+    <title>Contact Us</title>
     <link rel="stylesheet" type="text/css" media="all"
           href="../../static/js/css/contact.css" th:href="@{../js/css/contact.css}"/>
+
 
 </head>
 <body>
@@ -17,6 +19,7 @@
 
     <li><a href="code.html" th:href="@{/user/code}">Qr-Code Information</a></li>
     <li><a href="profile.html" th:href="@{'/profile/'+${name}}">Edit Profile</a></li>
+    <li><a href="changeUserPass.html" th:href="@{'/changeUserPass/'+${name}}">Edit Username/Password</a></li>
     <li><a href="contact.html" th:href="@{/contact}">Contact</a></li>
     <li style="float: right"><a href="#about">About</a></li>
 </ul>

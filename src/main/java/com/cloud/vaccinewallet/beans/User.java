@@ -25,21 +25,12 @@ public class User {
     private Long id;
     @NonNull
     private String username;
-
     @NonNull
     private String encryptedPassword;
     @NonNull
     private Boolean enabled;
-    @Lob
-    private Blob qr;
-
-    public User(@NonNull String username,@NonNull String encryptedPassword,@NonNull String email, Boolean enabled) {
-        this.username = username;
-        this.email = email;
-        this.encryptedPassword=encryptedPassword;
-        this.enabled=enabled;
-    }
-
+  /*  @Lob
+    private Blob qr;*/
     //User Information
     @NonNull
     private String firstName;
@@ -54,12 +45,18 @@ public class User {
     @NonNull
     private String email;
 
-   
-
-
-
     @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Role> roles = new ArrayList<Role>();
 
+    public User(@NonNull String username,@NonNull String encryptedPassword,@NonNull String email, Boolean enabled) {
+        this.username = username;
+        this.email = email;
+        this.encryptedPassword=encryptedPassword;
+        this.enabled=enabled;
+    }
+
+    @OneToOne
+    @JoinTable(name="USER_VACCINE", joinColumns= @JoinColumn(name="USER_ID"),	inverseJoinColumns= @JoinColumn(name="VACCINE_ID"))
+    private VaccineInformation vaccine;
 
 }

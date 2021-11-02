@@ -2,6 +2,11 @@ package com.cloud.vaccinewallet.controller;
 
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +14,8 @@ import com.cloud.vaccinewallet.amazon.AmazonClient;
 
 import com.cloud.vaccinewallet.beans.Email;
 
+import com.cloud.vaccinewallet.beans.VaccineInformation;
+import com.cloud.vaccinewallet.repositories.VaccineInformationRepository;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
@@ -48,6 +55,7 @@ public class HomeController {
     private AmazonClient amazonClient;
     private UserRepository userRepository;
     private RoleRepository roleRepository;
+    private VaccineInformationRepository vaccineInformationRepository;
     private Email e;
 
     /*
@@ -198,9 +206,10 @@ public class HomeController {
 
     @GetMapping("user/code")
     public String codePage(Model model) {
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         model.addAttribute("userName",auth.getName());
-        model.addAttribute("pdfInformation");
+        model.addAttribute("vaccineInfo", userRepository.findByUsername(auth.getName()));
         return "user/code";
     }
 
@@ -229,53 +238,65 @@ public class HomeController {
 
         // Fetching PDF document into Text variable
         String text = pdfStripper.getText(document);
-        System.out.println(text);
+
+/**************************************************************************************************************
+                             * Code to Save Vaccine Information
+ *************************************************************************************************************/
 
         String[] lines = text.split("\r\n|\r|\n");
         String name = "", date = "", vaccine = "", dose = "";
+
+        VaccineInformation vaccineInfo= new VaccineInformation();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user= userRepository.findByUsername(auth.getName());
 
         int count=1;
         for(String line:lines)
         {
             if(count == 3){
                 name = line.substring(10);
+                vaccineInfo.setNameOnVaccine(name);
             }
             if(count == 6){
                 date = line.substring(0, 11);
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                LocalDate vacDate = LocalDate.parse(date.trim(), formatter);
+                vaccineInfo.setVaccineDate(vacDate);
             }
             if(count == 8){
                 String[] res = line.split(" ");
                 vaccine = res[4];
+                vaccineInfo.setVaccineName(vaccine);
             }
             if(count == 14){
                 String[] res = line.split(" ");
                 dose = res[3];
+                vaccineInfo.setNoOfDose(Integer.parseInt(dose));
             }
+
             System.out.println(count+" "+line);
             count++;
         }
+        vaccineInformationRepository.save(vaccineInfo);
+        user.setVaccine(vaccineInfo);
+        userRepository.save(user);
 
-        System.out.println("Name: " + name + ", Date:" + date + ", Vaccine: " + vaccine + ", Doses: " + dose);
-
+/**************************************************************************************************************
+                            * Code to Generate QR
+*************************************************************************************************************/
         //data that we want to store in the QR code
         BitMatrix matrix = new MultiFormatWriter().encode(new String(text.getBytes("UTF-8"),
                 "UTF-8"), BarcodeFormat.QR_CODE,500, 500);
 
-          ByteArrayOutputStream bos = new ByteArrayOutputStream();
-          BufferedImage bimg = MatrixToImageWriter.toBufferedImage(matrix);
+//          ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        BufferedImage bimg = MatrixToImageWriter.toBufferedImage(matrix);
 
-          Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        File file = new File("C:\\Users\\Sn3haL\\Downloads\\" + auth.getName() + ".png");
+        ImageIO.write(bimg, "jpg", file);
+        amazonClient.uploadFile(file, auth.getName());
 
-          File file = new File("C:\\Users\\Sn3haL\\Downloads\\" + auth.getName() + ".png");
-          ImageIO.write(bimg, "jpg", file);
-
-          amazonClient.uploadFile(file, auth.getName());
-          System.out.println("Create QR");
-
-        User user = userRepository.findByUsername(auth.getName());
-
+        model.addAttribute("vaccineInfo", user.getVaccine());
         model.addAttribute("userName",auth.getName());
-        model.addAttribute("pdfInformation", text);
         return "user/code";
     }
 

@@ -202,6 +202,27 @@ public class HomeController {
         return "user/code";
     }
 
+    @GetMapping("/addUser")
+    public String addUser(Model model, @RequestParam String firstname, @RequestParam String lastname,
+                            @RequestParam String middlename,
+                            @RequestParam Long phoneNumber ,
+                            @RequestParam Integer age, @RequestParam String email) {
+
+        User user = new User();
+
+        user.setFirstName(firstname);
+        user.setLastName(lastname);
+        user.setMiddleName(middlename);
+        user.setPhoneNumber(phoneNumber);
+        user.setAge(age);
+        user.setEmail(email);
+
+        userRepository.save(user);
+        model.addAttribute("userList", userRepository.findAll());
+
+        return "/user/index";
+    }
+
     @PostMapping("/register")
     public String doRegistration(Model model,@RequestParam String username, @RequestParam String password, @RequestParam String usermail)
     {
@@ -270,7 +291,9 @@ public class HomeController {
      * */
     @PostMapping("/profile/{name}")
     public String editProfileInfo(Model model,@PathVariable String name ,@RequestParam String firstName,@RequestParam String lastName,
-                                  @RequestParam String middleName, @RequestParam Integer age, @RequestParam String email,
+                                  @RequestParam String middleName, @RequestParam Integer age, @RequestParam String hcNumber,
+                                  @RequestParam String address, @RequestParam String postalCode, @RequestParam String city,
+                                  @RequestParam String province,@RequestParam String email,
                                   @RequestParam Long phoneNumber)
     {
 
@@ -281,6 +304,11 @@ public class HomeController {
         user.setLastName(lastName);
         user.setMiddleName(middleName);
         user.setPhoneNumber(phoneNumber);
+        user.setHcNumber(hcNumber);
+        user.setAddress(address);
+        user.setPostalCode(postalCode);
+        user.setCity(city);
+        user.setProvince(province);
         user.setAge(age);
         user.setEmail(email);
         userRepository.save(user);
@@ -288,6 +316,4 @@ public class HomeController {
         model.addAttribute("userList", userRepository.findByUsername(name));
         return "user/index";
     }
-
-
 }

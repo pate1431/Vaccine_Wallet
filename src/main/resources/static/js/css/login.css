@@ -1,90 +1,143 @@
-body {font-family: Arial, Helvetica, sans-serif;}
-form {border: 3px solid #f1f1f1;}
+.gradient-custom-2 {
+  /* fallback for old browsers */
+  background: #fccb90;
 
-input[type=email],input[type=text], input[type=password] {
-  font-family: Arial;
-  width: 80%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: -webkit-linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
+
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593);
 }
 
-.commonContainer{
-  padding: 2%;
-  display:inline-block;
-  position: absolute;
-  top: 5%;
-  left: 18%;
-  text-align: center;
-  align-content: center;
-  justify-content: center;
-  width: 60%;
-  background: -webkit-linear-gradient(-135deg, #c850c0, #4158d0);
-  background: -o-linear-gradient(-135deg, #c850c0, #4158d0);
-  background: -moz-linear-gradient(-135deg, #c850c0, #4158d0);
-  background: linear-gradient(-135deg, #c850c0, #4158d0);
+@media (min-width: 768px) {
+  .gradient-form {
+    height: 100vh !important;
+  }
 }
-.button {
-  border-radius: 25px;
-  background-color: #4CAF50;
-  color: white;
-  padding: 14px 20px;
-  margin: 8px 0;
-  border: none;
+@media (min-width: 769px) {
+  .gradient-custom-2 {
+    border-top-right-radius: .3rem;
+    border-bottom-right-radius: .3rem;
+  }
+}
+
+.btn-color {
+  border-radius: 50px;
+  color: #fff;
+  background-image: linear-gradient(to right, #FFD54F, #D500F9);
+  padding: 15px;
   cursor: pointer;
-  width: 100%;
+  border: none !important;
+  margin-top: 40px
 }
 
-.button:hover {
-  opacity: 0.8;
+.btn-color:hover {
+  color: #fff;
+  background-image: linear-gradient(to right, #D500F9, #FFD54F)
 }
 
-
-.imgcontainer {
-  justify-content: center;
-  height: 100%;
-  text-align: center;
-  align-items: center;
-  margin: 24px 0 12px 0;
-}
-
-img.avatar {
-  text-align: center;
-  width: 20%;
-  border-radius: 50%;
-}
-
-.container {
-  padding: 16px;
-}
-
-span.psw {
-  float: right;
-  padding-top: 16px;
-
-}
-a:link, a:visited {
-  background-color: #f44336;
-  color: white;
-  border-radius: 25px;
-  padding: 14px 25px;
-  text-align: center;
+.btn-white {
+  border-radius: 50px;
   text-decoration: none;
-  display: inline-block;
+  color: #D500F9;
+  background-color: #fff;
+  padding: 8px 40px;
+  cursor: pointer;
+  border: 2px solid #D500F9 !important
 }
 
-a:hover, a:active {
-  background-color: red;
+.btn-white:hover {
+  color: #fff;
+  background-image: linear-gradient(to right, #FFD54F, #D500F9)
 }
 
-/* Change styles for span and cancel button on extra small screens */
-@media screen and (max-width: 300px) {
-  span.psw {
-     display: block;
-     float: none;
-  }
-  .cancelbtn {
-     width: 100%;
-  }
-}
+/*body {font-family: Arial, Helvetica, sans-serif;}*/
+/*form {border: 3px solid #f1f1f1;}*/
+
+/*input[type=email],input[type=text], input[type=password] {*/
+/*  font-family: Arial;*/
+/*  width: 80%;*/
+/*  padding: 12px 20px;*/
+/*  margin: 8px 0;*/
+/*  border: 1px solid #ccc;*/
+/*  box-sizing: border-box;*/
+/*}*/
+
+/*.commonContainer{*/
+/*  padding: 2%;*/
+/*  display:inline-block;*/
+/*  position: absolute;*/
+/*  top: 5%;*/
+/*  left: 18%;*/
+/*  text-align: center;*/
+/*  align-content: center;*/
+/*  justify-content: center;*/
+/*  width: 60%;*/
+/*  background: -webkit-linear-gradient(-135deg, #c850c0, #4158d0);*/
+/*  background: -o-linear-gradient(-135deg, #c850c0, #4158d0);*/
+/*  background: -moz-linear-gradient(-135deg, #c850c0, #4158d0);*/
+/*  background: linear-gradient(-135deg, #c850c0, #4158d0);*/
+/*}*/
+/*.button {*/
+/*  border-radius: 25px;*/
+/*  background-color: #4CAF50;*/
+/*  color: white;*/
+/*  padding: 14px 20px;*/
+/*  margin: 8px 0;*/
+/*  border: none;*/
+/*  cursor: pointer;*/
+/*  width: 100%;*/
+/*}*/
+
+/*.button:hover {*/
+/*  opacity: 0.8;*/
+/*}*/
+
+
+/*.imgcontainer {*/
+/*  justify-content: center;*/
+/*  height: 100%;*/
+/*  text-align: center;*/
+/*  align-items: center;*/
+/*  margin: 24px 0 12px 0;*/
+/*}*/
+
+/*img.avatar {*/
+/*  text-align: center;*/
+/*  width: 20%;*/
+/*  border-radius: 50%;*/
+/*}*/
+
+/*.container {*/
+/*  padding: 16px;*/
+/*}*/
+
+/*span.psw {*/
+/*  float: right;*/
+/*  padding-top: 16px;*/
+
+/*}*/
+/*a:link, a:visited {*/
+/*  background-color: #f44336;*/
+/*  color: white;*/
+/*  border-radius: 25px;*/
+/*  padding: 14px 25px;*/
+/*  text-align: center;*/
+/*  text-decoration: none;*/
+/*  display: inline-block;*/
+/*}*/
+
+/*a:hover, a:active {*/
+/*  background-color: red;*/
+/*}*/
+
+/*!* Change styles for span and cancel button on extra small screens *!*/
+/*@media screen and (max-width: 300px) {*/
+/*  span.psw {*/
+/*     display: block;*/
+/*     float: none;*/
+/*  }*/
+/*  .cancelbtn {*/
+/*     width: 100%;*/
+/*  }*/
+/*}*/

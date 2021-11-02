@@ -178,14 +178,12 @@ public class HomeController {
 //show index in user on load
 
     @GetMapping("user/index")
-    public String homePage(Model model, Authentication authentication) {
-     /*   User user = new User();
-        user.setUsername(authentication.getName());*/
+    public String homePage(Model model) {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            model.addAttribute("userName", authentication.getName());
+            model.addAttribute("userList", userRepository.findByUsername(authentication.getName()));
+            return "user/index";
 
-        model.addAttribute("userName", authentication.getName());
-        model.addAttribute("userList", userRepository.findByUsername(authentication.getName()));
-
-        return "user/index";
     }
 
     @GetMapping("user/code")
@@ -369,7 +367,7 @@ public class HomeController {
     public String editProfilePassword(Model model, @PathVariable String name,
                                       @RequestParam String username, @RequestParam String password) {
 
-        /*  List<User> userList = userRepository.findAll();*/
+
         if (name.equals(username)) {
             User user = userRepository.findByUsername(username);
             System.out.println(password);

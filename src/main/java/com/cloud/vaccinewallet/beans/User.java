@@ -26,8 +26,7 @@ public class User {
     private Long id;
     @NonNull
     private String username;
-    @NonNull
-    private String usermail;
+
     @NonNull
     private String encryptedPassword;
     @NonNull
@@ -35,9 +34,9 @@ public class User {
     @Lob
     private Blob qr;
 
-    public User(@NonNull String username,@NonNull String encryptedPassword,@NonNull String usermail, Boolean enabled) {
+    public User(@NonNull String username,@NonNull String encryptedPassword,@NonNull String email, Boolean enabled) {
         this.username = username;
-        this.usermail = usermail;
+        this.email = email;
         this.encryptedPassword=encryptedPassword;
         this.enabled=enabled;
     }

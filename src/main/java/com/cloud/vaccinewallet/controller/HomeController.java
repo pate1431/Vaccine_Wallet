@@ -5,7 +5,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import com.cloud.vaccinewallet.amazon.AmazonClient;
 
 import com.cloud.vaccinewallet.beans.Email;
@@ -15,6 +14,7 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
+import com.google.zxing.common.StringUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.springframework.security.core.Authentication;
@@ -223,14 +223,39 @@ public class HomeController {
 
     @PostMapping(value = "/generateQR",  consumes = "multipart/form-data")
     public String generateQR(Model model, @RequestParam(value="vacfile") MultipartFile vacfile) throws IOException, WriterException {
-       /* String path= "C:\\Users\\Sn3haL\\Downloads\\code.png";
-*/
+
         PDDocument document = PDDocument.load(vacfile.getBytes());
         PDFTextStripper pdfStripper = new PDFTextStripper();
 
         // Fetching PDF document into Text variable
         String text = pdfStripper.getText(document);
         System.out.println(text);
+
+        String[] lines = text.split("\r\n|\r|\n");
+        String name = "", date = "", vaccine = "", dose = "";
+
+        int count=1;
+        for(String line:lines)
+        {
+            if(count == 3){
+                name = line.substring(10);
+            }
+            if(count == 6){
+                date = line.substring(0, 11);
+            }
+            if(count == 8){
+                String[] res = line.split(" ");
+                vaccine = res[4];
+            }
+            if(count == 14){
+                String[] res = line.split(" ");
+                dose = res[3];
+            }
+            System.out.println(count+" "+line);
+            count++;
+        }
+
+        System.out.println("Name: " + name + ", Date:" + date + ", Vaccine: " + vaccine + ", Doses: " + dose);
 
         //data that we want to store in the QR code
         BitMatrix matrix = new MultiFormatWriter().encode(new String(text.getBytes("UTF-8"),

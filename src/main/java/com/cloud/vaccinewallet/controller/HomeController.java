@@ -179,12 +179,11 @@ public class HomeController {
 
     @GetMapping("user/index")
     public String homePage(Model model, Authentication authentication) {
-        User user = new User();
-        user.setUsername(authentication.getName());
-        String name = authentication.getName();
-        model.addAttribute("name", name);
-        model.addAttribute("username", authentication.getName());
-        model.addAttribute("userList", userRepository.findByUsername(name));
+     /*   User user = new User();
+        user.setUsername(authentication.getName());*/
+
+        model.addAttribute("userName", authentication.getName());
+        model.addAttribute("userList", userRepository.findByUsername(authentication.getName()));
 
         return "user/index";
     }

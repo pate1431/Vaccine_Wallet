@@ -50,9 +50,19 @@ public class User {
 
     private String middleName;
     @NonNull
-    private Long phoneNumber;
-    @NonNull
     private Integer age;
+    @NonNull
+    private String hcNumber;
+    @NonNull
+    private String address;
+    @NonNull
+    private String postalCode;
+    @NonNull
+    private String city;
+    @NonNull
+    private String province;
+    @NonNull
+    private Long phoneNumber;
     @NonNull
     private String email;
 

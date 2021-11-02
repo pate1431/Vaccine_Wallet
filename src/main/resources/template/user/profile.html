@@ -20,13 +20,23 @@
     <form name="form" method="post" th:action="@{'/profile/'+${name}}">
         <Label> First Name: </Label>
         <input type="text" name="firstName" placeholder="Enter First Name">
-        <Label> Middle Name </Label>
+        <Label> Middle Name: </Label>
         <input type="text" name="middleName" placeholder="Enter Middle Name">
-        <Label> Last Name </Label>
+        <Label> Last Name: </Label>
         <input type="text" name="lastName" placeholder="Enter Last Name">
         <Label> Age: </Label>
         <input type="number" name="age" placeholder="Enter Age">
-        <Label> Email: </Label>
+        <label>Health Card No:</label>
+        <input type="text" name="hcNumber" placeholder="Enter Health card Number">
+        <Label> Address: </Label>
+        <input type="text" name="address" placeholder="Enter Address">
+        <Label> Postal Code: </Label>
+        <input type="text" name="postalCode" placeholder="Enter Postal Code">
+        <Label> City: </Label>
+        <input type="text" name="city" placeholder="Enter City">
+        <Label> Province: </Label>
+        <input type="text" name="province" placeholder="Enter Province">
+        <Label> Phone: </Label>
         <input type="number" name="phoneNumber" placeholder="Enter Phone Number">
         <Label> Email: </Label>
         <input type="text" name="email" placeholder="Enter Email">

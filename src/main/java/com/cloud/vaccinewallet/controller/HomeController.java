@@ -82,12 +82,16 @@ public class HomeController {
     }
 
     @GetMapping("/upload")
-    public String uploadPage() {
+    public String uploadPage(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("userName", auth.getName());
         return "user/upload";
     }
 
     @GetMapping("/contact")
-    public String contactPage() {
+    public String contactPage(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("userName", auth.getName());
         return "user/contact";
     }
 
@@ -98,6 +102,7 @@ public class HomeController {
     @GetMapping("/user")
     public String userIndex(Model model, Authentication authenticationUser) {
         String name = authenticationUser.getName();
+
         List<String> roles = new ArrayList<String>();
         for (GrantedAuthority ga : authenticationUser.getAuthorities()) {
             roles.add(ga.getAuthority());
@@ -180,6 +185,7 @@ public class HomeController {
         model.addAttribute("name", name);
         model.addAttribute("username", authentication.getName());
         model.addAttribute("userList", userRepository.findByUsername(name));
+
         return "user/index";
     }
 
@@ -208,7 +214,8 @@ public class HomeController {
 
         userRepository.save(user);
         model.addAttribute("userList", userRepository.findAll());
-
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("userName", auth.getName());
         return "/user/index";
     }
 
@@ -307,7 +314,8 @@ public class HomeController {
      * */
     @GetMapping("/profile/{name}")
     public String profilePage(Model model, @PathVariable String name) {
-
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("userName", auth.getName());
         model.addAttribute("userList", userRepository.findByUsername(name));
         return "user/profile";
     }
@@ -352,6 +360,8 @@ public class HomeController {
     @GetMapping("/changeUserPass/{name}")
     public String changeSigningInfo(Model model, @PathVariable String name) {
         model.addAttribute("userList", userRepository.findByUsername(name));
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("userName", auth.getName());
         return "user/changeUserPass";
 
     }

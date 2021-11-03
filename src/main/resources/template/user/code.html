@@ -31,18 +31,21 @@
     <li style="float: right"><a href="/user" th:href="@{/logout}" class="text-white">Logout</a></li>
 </ul>
 
-<h2>Welcome To The Vaccine Wallet Application</h2>
 
-<div class="flex-container">
-    <div id="code">
+<div class="row">
+    <div id="code" class="col-sm-4">
         <img th:src="@{'https://qrclouddb.s3.ca-central-1.amazonaws.com/'+${userName}+'.jpg'}"  alt="Code"/>
     </div>
-    <div>
+    <div class="col-sm-8">
+
         <table class="table">
             <thead class="thead-dark">
+
             <tr>
                 <th scope="col">Name</th>
-                <th scope="col">Vaccine Date</th>
+                <th scope="col">Vaccine Date
+                    <span class="text-danger small " th:text="${confirm}">confirm</span>
+                </th>
                 <th scope="col">Vaccine Name</th>
                 <th scope="col">Recieved Doses</th>
             </tr>

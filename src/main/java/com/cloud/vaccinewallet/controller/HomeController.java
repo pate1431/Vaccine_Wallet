@@ -2,8 +2,10 @@ package com.cloud.vaccinewallet.controller;
 
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +22,7 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
+import org.apache.tomcat.jni.Local;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -180,6 +183,7 @@ public class HomeController {
     @GetMapping("user/index")
     public String homePage(Model model) {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
             model.addAttribute("userName", authentication.getName());
             model.addAttribute("userList", userRepository.findByUsername(authentication.getName()));
             return "user/index";
@@ -189,6 +193,19 @@ public class HomeController {
     @GetMapping("user/code")
     public String codePage(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user= userRepository.findByUsername(auth.getName());
+        LocalDate date1=user.getVaccine().getVaccineDate();
+        LocalDate date2 =java.time.LocalDate.now();
+        Long daysBetween = ChronoUnit.DAYS.between(date1, date2);
+        System.out.println(daysBetween);
+        if(daysBetween <= 14)
+        {
+            model.addAttribute("confirm","Not Eligible to Travel or Enter");
+        }
+        else
+        {
+            model.addAttribute("confirm","Eligible to Travel or Enter");
+        }
         model.addAttribute("userName", auth.getName());
         model.addAttribute("vaccineInfo", userRepository.findByUsername(auth.getName()));
         return "user/code";

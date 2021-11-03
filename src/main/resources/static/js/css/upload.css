@@ -25,7 +25,9 @@ li a {
 }
 
 li a:hover {
-    background-color: #04AA6D;
+    background-color: #ff4c4c;
+    text-decoration: none;
+    color: white;
 }
 
 .card {

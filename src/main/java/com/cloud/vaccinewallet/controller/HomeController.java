@@ -269,7 +269,7 @@ public class HomeController {
 
 
         String[] lines = text.split("\r\n|\r|\n");
-
+        System.out.println(lines[0]);
         if (lines[0].equals("Ministry of Health") && lines[1].equals("Ministère de la Santé")) {
             String name = "", date = "", vaccine = "", dose = "";
 
@@ -319,7 +319,7 @@ public class HomeController {
 
             BufferedImage bimg = MatrixToImageWriter.toBufferedImage(matrix);
 
-            File file = new File("C:\\Users\\Sn3haL\\Downloads\\" + auth.getName() + ".png");
+            File file = new File("C:\\Users\\Public\\" + auth.getName() + ".png");
             ImageIO.write(bimg, "jpg", file);
             amazonClient.uploadFile(file, auth.getName());
 

@@ -5,7 +5,7 @@
     <title>Edit Signing Info</title>
     <link rel="stylesheet" type="text/css" media="all"
           href="../../static/js/css/index.css" th:href="@{../js/css/index.css}"/>
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
 
@@ -19,20 +19,39 @@
     <li style="float: right"><a href="/user" th:href="@{/logout}" class="text-white">Logout</a></li>
 </ul>
 
-<div>
+<div class="heading">
+    <h2>Edit Login Credentials</h2>
+</div>
+
+<div class="container">
     <form name="form" method="post" th:action="@{'/changePass/'+${name}}">
 
         <Label> Username: </Label>
-        <input type="text" name="username" placeholder="Enter Username">
+        <input type="text"  class="form-control" name="username" placeholder="Enter Username">
         <Label> New Password: </Label>
         <div th:if="${userList} == null">
             <div style="color: red;">Invalid Username</div>
         </div>
-        <input type="password" name="password" placeholder="Enter New Password">
+        <input type="password" class="form-control" name="password" placeholder="Enter New Password"><br>
         <input type="submit" value="Change Password">
 
     </form>
 </div>
+
+<!--<div>-->
+<!--    <form name="form" method="post" th:action="@{'/changePass/'+${name}}">-->
+
+<!--        <Label> Username: </Label>-->
+<!--        <input type="text" name="username" placeholder="Enter Username">-->
+<!--        <Label> New Password: </Label>-->
+<!--        <div th:if="${userList} == null">-->
+<!--            <div style="color: red;">Invalid Username</div>-->
+<!--        </div>-->
+<!--        <input type="password" name="password" placeholder="Enter New Password">-->
+<!--        <input type="submit" value="Change Password">-->
+
+<!--    </form>-->
+<!--</div>-->
 
 </body>
 </html>

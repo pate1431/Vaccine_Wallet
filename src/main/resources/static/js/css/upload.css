@@ -27,13 +27,15 @@ li a {
 li a:hover {
     background-color: #04AA6D;
 }
+
 .card {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    max-width: 300px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.10);
+    max-width: 500px;
     margin: auto;
     text-align: center;
     font-family: arial;
 }
+
 button {
     border: none;
     outline: 0;
@@ -60,5 +62,13 @@ input[type=file]{
     color: green;
 }
 .avatar{
-    width: 20%;
+    width: 30%;
+}
+
+.heading{
+    border-radius: 10px;
+    background-color: lightgray;
+    padding: 1px;
+    text-align: center;
+    margin: 50px 100px 50px 100px;
 }

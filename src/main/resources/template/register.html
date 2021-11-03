@@ -19,17 +19,17 @@
                         <form class="px-md-2" name="form" action="#" th:action="@{/register}" method="post" onsubmit="return verify()">
 
                             <div class="form-outline mb-4">
-                                <input type="text" id="username" class="form-control" />
+                                <input type="text" id="username" name="username" class="form-control" />
                                 <label class="form-label" for="username">Name</label>
                             </div>
 
                             <div class="form-outline mb-4">
-                                <input type="email" id="usermail" class="form-control" />
+                                <input type="email" id="usermail" name="usermail" class="form-control" />
                                 <label class="form-label" for="usermail">Email</label>
                             </div>
 
                             <div class="form-outline mb-4">
-                                <input type="password" id="password" class="form-control" />
+                                <input type="password" id="password" name="password" class="form-control" />
                                 <label class="form-label" for="password">Password</label>
                             </div>
 
@@ -60,36 +60,6 @@
 </script>
 
 
-
-<!-- -&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
-<!--<div class="container">-->
-
-<!--    <h1>Register</h1>-->
-<!--    <p>Please fill in this form to create an account.</p>-->
-
-<!--    <div id="error" class="alert"></div>-->
-
-<!--    <form name="form" action="#" th:action="@{/register}" method="post" onsubmit="return verify()">-->
-<!--        <div class="row">-->
-<!--            <div class="col">-->
-<!--                <input type="text" id="email" class="form-control" name="username" placeholder="Enter your new username!">-->
-<!--            </div>-->
-<!--            <div class="col">-->
-<!--                <input type="text" id="mail" class="form-control" name="usermail" placeholder="Enter your new Email Id!">-->
-<!--            </div>-->
-<!--            <div class="col">-->
-<!--                <input type="password" id="psw" class="form-control" name="password" placeholder="Create a new password">-->
-<!--            </div>-->
-<!--            <div class="col">-->
-<!--                <input type="password" id="psw-repeat" class="form-control" name="verifyPassword" placeholder="Re-enter your password">-->
-<!--            </div>-->
-<!--        </div><br>-->
-
-<!--                <button type="submit" class="registerbtn" >Sign Up</button>-->
-<!--                <a class="btn btn-dark form-control" href="/login" th:href="@{/login}">Login Page</a>-->
-<!--               <br>-->
-<!--                <a class="btn btn-dark form-control" href="/" th:href="@{/}">Welcome Page</a>-->
-<!--    </form>-->
 
 </div>
 

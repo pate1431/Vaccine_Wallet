@@ -37,7 +37,7 @@
         <Label> Address: </Label>
         <input type="text" name="address" th:value="${info.address}" placeholder="Enter Address">
         <Label> Postal Code: </Label>
-        <input type="text" name="postalCode" th:value="${info.postalCode}" placeholder="Enter Postal Code">
+        <input type="text" name="postalCode" title="A1A 1A1" pattern="[A-Za-z][0-9][A-Za-z] [0-9][A-Za-z][0-9]" th:value="${info.postalCode}" placeholder="Enter Postal Code">
         <Label> City: </Label>
         <input type="text" name="city" th:value="${info.city}" placeholder="Enter City">
         <Label> Province: </Label>

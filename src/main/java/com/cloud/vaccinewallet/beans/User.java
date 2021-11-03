@@ -39,7 +39,7 @@ public class User {
     private String middleName;
     @NonNull
     private Integer age;
-    @NonNull
+
     private String hcNumber;
     @NonNull
     private String address;

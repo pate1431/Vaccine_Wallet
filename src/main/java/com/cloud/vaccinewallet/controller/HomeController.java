@@ -146,7 +146,7 @@ public class HomeController {
 
         user.setUsername(authentication.getName());
         String name = authentication.getName();
-        System.out.println(name);
+
         model.addAttribute("name", name);
         return "admin/index";
     }
@@ -172,7 +172,7 @@ public class HomeController {
 
     @GetMapping("/admin/database/{name}")
     public String adminDatabase(Model model, @PathVariable String name) {
-        System.out.println(name);
+
         model.addAttribute("userData", userRepository.findAll());
         return "admin/database";
     }
@@ -197,7 +197,7 @@ public class HomeController {
         LocalDate date1=user.getVaccine().getVaccineDate();
         LocalDate date2 =java.time.LocalDate.now();
         Long daysBetween = ChronoUnit.DAYS.between(date1, date2);
-        System.out.println(daysBetween);
+
         if(daysBetween <= 14)
         {
             model.addAttribute("confirm","Not Eligible to Travel or Enter");
@@ -236,6 +236,7 @@ public class HomeController {
     @PostMapping("/register")
     public String doRegistration(Model model, @RequestParam String username, @RequestParam String password, @RequestParam String usermail) {
 
+
         if(userRepository.findByUsername(username)==null)
         {
             User user = new User(username, encodePassword(password), usermail, Boolean.valueOf("1"));
@@ -249,6 +250,7 @@ public class HomeController {
         }
         else
         {
+            model.addAttribute("taken","Username Already Taken");
             return "register";
         }
 
@@ -261,75 +263,101 @@ public class HomeController {
         PDFTextStripper pdfStripper = new PDFTextStripper();
 
         // Fetching PDF document into Text variable
-        String text = pdfStripper.getText(document);
+        String text = "";
+        text = pdfStripper.getText(document);
+        if(text.trim().isEmpty())
+        {
+            model.addAttribute("pdf","Please Enter Valid Canadian Vaccine Document");
+            return "user/upload";
+        }
 
 /**************************************************************************************************************
  * Code to Save Vaccine Information
  *************************************************************************************************************/
+        else
+        {
+            model.addAttribute("pdf","");
+            model.addAttribute("upload","");
+
+            String[] lines = text.split("\r\n|\r|\n");
 
 
-        String[] lines = text.split("\r\n|\r|\n");
-        System.out.println(lines[0]);
-        if (lines[0].equals("Ministry of Health") && lines[1].equals("Ministère de la Santé")) {
-            String name = "", date = "", vaccine = "", dose = "";
+            if (lines[0].equals("Ministry of Health") && lines[1].equals("Ministère de la Santé"))
+            {
+                String name = "", date = "", vaccine = "", dose = "";
 
-            VaccineInformation vaccineInfo = new VaccineInformation();
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            User user = userRepository.findByUsername(auth.getName());
+                VaccineInformation vaccineInfo = new VaccineInformation();
+                Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+                User user = userRepository.findByUsername(auth.getName());
 
-            int count = 1;
-            for (String line : lines) {
-                if (count == 3) {
-                    name = line.substring(10);
-                    vaccineInfo.setNameOnVaccine(name);
+                int count = 1;
+                for (String line : lines) {
+                    if (count == 3) {
+                        name = line.substring(10);
+                        vaccineInfo.setNameOnVaccine(name);
+                    }
+                    if (count == 6) {
+                        date = line.substring(0, 11);
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                        LocalDate vacDate = LocalDate.parse(date.trim(), formatter);
+                        vaccineInfo.setVaccineDate(vacDate);
+                    }
+                    if (count == 8) {
+                        String[] res = line.split(" ");
+                        vaccine = res[4];
+                        vaccineInfo.setVaccineName(vaccine);
+                    }
+
+                    if (line.contains("received 1")) {
+                        dose = "1";
+                        vaccineInfo.setNoOfDose(dose);
+                    }
+
+                    if (line.contains("received 2")) {
+                        dose = "2";
+                        vaccineInfo.setNoOfDose(dose);
+                    }
+                    count++;
+
                 }
-                if (count == 6) {
-                    date = line.substring(0, 11);
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                    LocalDate vacDate = LocalDate.parse(date.trim(), formatter);
-                    vaccineInfo.setVaccineDate(vacDate);
-                }
-                if (count == 8) {
-                    String[] res = line.split(" ");
-                    vaccine = res[4];
-                    vaccineInfo.setVaccineName(vaccine);
-                }
-                if (count == 14) {
-                    String[] res = line.split(" ");
-                    dose = res[3];
-                    vaccineInfo.setNoOfDose(Integer.parseInt(dose));
-                }
-                count++;
+                vaccineInformationRepository.save(vaccineInfo);
+                user.setVaccine(vaccineInfo);
+                userRepository.save(user);
+
+                String info = "Name: " + name + "\tDate: " + date + "\tVaccine Name: " + vaccine +
+                        "\tDose Received: " + dose;
+
+
+                /**************************************************************************************************************
+                 * Code to Generate QR
+                 *************************************************************************************************************/
+                //data that we want to store in the QR code
+                BitMatrix matrix = new MultiFormatWriter().encode(new String(info.getBytes("UTF-8"),
+                        "UTF-8"), BarcodeFormat.QR_CODE, 500, 500);
+
+
+
+           
+          
+                BufferedImage bimg = MatrixToImageWriter.toBufferedImage(matrix);
+
+                File file = new File("C:\\Users\\Public\\" + auth.getName() + ".png");
+          
+//                File file = new File("C:\\Users\\Sn3haL\\Downloads\\" + auth.getName() + ".png");
+                ImageIO.write(bimg, "jpg", file);
+                amazonClient.uploadFile(file, auth.getName());
+
+
+                model.addAttribute("userName", auth.getName());
+                model.addAttribute("vaccineInfo", userRepository.findByUsername(auth.getName()));
+                return "user/code";
             }
-            vaccineInformationRepository.save(vaccineInfo);
-            user.setVaccine(vaccineInfo);
-            userRepository.save(user);
-
-            String info= "Name: "+name+"\tDate: "+date+"\tVaccine Name: "+vaccine+
-                    "\tDose Received: "+dose;
-
-            System.out.println(info);
-            /**************************************************************************************************************
-             * Code to Generate QR
-             *************************************************************************************************************/
-            //data that we want to store in the QR code
-            BitMatrix matrix = new MultiFormatWriter().encode(new String(info.getBytes("UTF-8"),
-                    "UTF-8"), BarcodeFormat.QR_CODE, 500, 500);
-
-
-            BufferedImage bimg = MatrixToImageWriter.toBufferedImage(matrix);
-
-            File file = new File("C:\\Users\\Public\\" + auth.getName() + ".png");
-            ImageIO.write(bimg, "jpg", file);
-            amazonClient.uploadFile(file, auth.getName());
-
-
-            model.addAttribute("userName", auth.getName());
-            model.addAttribute("vaccineInfo", userRepository.findByUsername(auth.getName()));
-            return "user/code";
-        } else {
-            return "user/upload";
+            else {
+                model.addAttribute("upload","Invaild Document. Please Upload Valid Document");
+                return "user/upload";
+            }
         }
+
     }
 
     /*
@@ -359,11 +387,7 @@ public class HomeController {
                                   @RequestParam String province,@RequestParam String email,
                                   @RequestParam Long phoneNumber)
     {
-
-
-        // List<User> userList= userRepository.findAll();
         User user = userRepository.findByUsername(name);
-
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setMiddleName(middleName);
@@ -398,8 +422,7 @@ public class HomeController {
 
         if (name.equals(username)) {
             User user = userRepository.findByUsername(username);
-            System.out.println(password);
-            System.out.println(encodePassword(password));
+
             user.setEncryptedPassword(encodePassword(password));
 
             userRepository.save(user);
@@ -407,7 +430,7 @@ public class HomeController {
             model.addAttribute("userList", userRepository.findByUsername(name));
             return "user/index";
         } else {
-     //       model.addAttribute("userList", userRepository.findByUsername(name));
+            model.addAttribute("usercheck", "Invalid Username");
             return "user/changeUserPass";
         }
 

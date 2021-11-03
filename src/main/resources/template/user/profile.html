@@ -32,18 +32,16 @@
         <input type="number" name="phoneNumber" th:value="${info.phoneNumber}" placeholder="Enter Phone Number" maxlength="10">
         <Label> Email: </Label>
         <input type="text" name="email" th:value="${info.email}" placeholder="Enter Email">
-
-        
         <label>Health Card No:</label>
-        <input type="text" name="hcNumber" placeholder="Enter Health card Number">
+        <input type="text" name="hcNumber" th:value="${info.hcNumber}" placeholder="Enter Health card Number">
         <Label> Address: </Label>
-        <input type="text" name="address" placeholder="Enter Address">
+        <input type="text" name="address" th:value="${info.address}" placeholder="Enter Address">
         <Label> Postal Code: </Label>
-        <input type="text" name="postalCode" placeholder="Enter Postal Code">
+        <input type="text" name="postalCode" title="A1A 1A1" pattern="[A-Za-z][0-9][A-Za-z] [0-9][A-Za-z][0-9]" th:value="${info.postalCode}" placeholder="Enter Postal Code">
         <Label> City: </Label>
-        <input type="text" name="city" placeholder="Enter City">
+        <input type="text" name="city" th:value="${info.city}" placeholder="Enter City">
         <Label> Province: </Label>
-        <input type="text" name="province" placeholder="Enter Province">
+        <input type="text" name="province" th:value="${info.province}" placeholder="Enter Province">
 
 
         <input type="submit" value="Confirm Changes">

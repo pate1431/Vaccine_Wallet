@@ -21,8 +21,13 @@
 <div class="card">
 <form method="post" enctype="multipart/form-data" th:action="@{/generateQR}">
     <img src="../../static/js/image/upload.png" th:src="@{/js/image/upload.png}" alt="Avatar" class="avatar"><br>
+
     <label>Upload Document</label>
-    <input type="file" name="vacfile">
+    <br>
+    <span style="font-size: xx-small; color: red " th:text="${pdf}"></span>
+    <label  style="font-size: xx-small; color: red " th:text="${upload}"></label>
+
+    <input type="file" accept="application/pdf" name="vacfile">
     <button type="submit" value="Generate QR">Generate QR</button>
 </form>
 </div>

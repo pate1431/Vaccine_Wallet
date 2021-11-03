@@ -6,7 +6,6 @@
     <meta charset="ISO-8859-1">
     <title>Register</title>
 
-<!--    <script src="../static/js/script.js" th:src="@{../js/script.js}"></script>-->
 </head>
 
 <body>
@@ -18,10 +17,11 @@
                     <img src="https://nses.blackgold.ca/wp-content/uploads/sites/36/2014/11/registration.png" class="w-100" style="border-top-left-radius: .3rem; border-top-right-radius: .3rem;" alt="Sample photo">
                     <div class="card-body p-4 p-md-5">
 
-                        <form class="px-md-2" id="form"name="form" action="#" th:action="@{/register}" method="post" <!--onsubmit="return verify()"-->>
+                        <form class="px-md-2" id="form"name="form" action="#" th:action="@{/register}" method="post" >
 
                             <div class="form-outline mb-4">
-                                <input type="text" id="username" name="username" class="form-control" />
+                                <span style="font-size: xx-small; color: red " th:text="${taken}"></span>
+                                <input type="text" minlength="5" id="username" name="username" class="form-control" />
                                 <label class="form-label" for="username">Name</label>
                             </div>
 
@@ -32,7 +32,10 @@
 
                             <div class="form-outline mb-4">
                                 <p id="errorP" style="color: red"></p>
-                                <input type="password" id="password" name="password" class="form-control" />
+                                <input type="password" id="password" name="password" class="form-control"
+                                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                                title="Must contain at least One number and One uppercase and lowercase letter, and at least 8 or more characters"
+                                />
                                 <label class="form-label" for="password">Password</label>
                             </div>
 

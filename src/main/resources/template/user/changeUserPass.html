@@ -25,9 +25,12 @@
         <Label> Username: </Label>
         <input type="text" name="username" placeholder="Enter Username">
         <Label> New Password: </Label>
+        <div th:if="${userList} == null">
+            <div style="color: red;">Invalid Username</div>
+        </div>
         <input type="password" name="password" placeholder="Enter New Password">
-
         <input type="submit" value="Change Password">
+
     </form>
 </div>
 

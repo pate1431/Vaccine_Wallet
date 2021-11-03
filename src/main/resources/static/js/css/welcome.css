@@ -26,7 +26,7 @@ body, html {
 /* Position text in the middle of the page/image */
 .bg-text {
     background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0, 0.4); /* Black w/opacity/see-through */
+    background-color: rgba(0,0,0, 0.6); /* Black w/opacity/see-through */
     color: white;
     font-weight: bold;
     position: absolute;
@@ -34,13 +34,15 @@ body, html {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 2;
-    width: 80%;
+    width: 70%;
     padding: 20px;
     text-align: center;
 }
 
-a{
-    color: white;
-    text-decoration: none;
-    background-color: transparent;
+img{
+    height: 150px;
+    width: 150px;
+    border-radius: 50%;
+
 }
+

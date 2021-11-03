@@ -2,15 +2,29 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
-    <link rel="stylesheet" type="text/css" media="all"
-          href="../static/js/css/index.css"/>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Welcome</title>
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../static/js/css/welcome.css" th:href="@{../js/css/welcome.css}"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
+
 <body>
 
-<a href="/user" th:href="@{/login}" class="text-white">User Login</a>
+<div class="bg-image">
+</div>
+
+<div class="bg-text">
+    <br>
+    <img src="https://thumbs.dreamstime.com/b/design-can-be-used-as-logo-icon-as-complement-to-design-team-cloud-logo-icon-design-124987271.jpg"><br><br>
+    <h1>WELCOME TO VACCINE WALLET</h1><br>
+    <h5>Get your vaccine passport easily at your finger-tip by just uploading the proof of vaccination.</h5><br><br>
+    <button class="btn btn-danger"><a href="/user" th:href="@{/login}" style="color: white">Get Started</a></button><br><br>
+</div>
+
+<!--<a href="/user" th:href="@{/login}" class="text-white">User Login</a>-->
+
 <!--<a href="/admin" th:href="@{/login}" class="text-white">Admin Login</a>-->
 </body>
 

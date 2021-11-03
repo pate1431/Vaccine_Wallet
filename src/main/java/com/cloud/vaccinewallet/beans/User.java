@@ -29,8 +29,7 @@ public class User {
     private String encryptedPassword;
     @NonNull
     private Boolean enabled;
-  /*  @Lob
-    private Blob qr;*/
+
     //User Information
     @NonNull
     private String firstName;

@@ -273,19 +273,21 @@ public class HomeController {
                     dose = res[3];
                     vaccineInfo.setNoOfDose(Integer.parseInt(dose));
                 }
-
-                System.out.println(count + " " + line);
                 count++;
             }
             vaccineInformationRepository.save(vaccineInfo);
             user.setVaccine(vaccineInfo);
             userRepository.save(user);
 
+            String info= "Name: "+name+"\tDate: "+date+"\tVaccine Name: "+vaccine+
+                    "\tDose Received: "+dose;
+
+            System.out.println(info);
             /**************************************************************************************************************
              * Code to Generate QR
              *************************************************************************************************************/
             //data that we want to store in the QR code
-            BitMatrix matrix = new MultiFormatWriter().encode(new String(text.getBytes("UTF-8"),
+            BitMatrix matrix = new MultiFormatWriter().encode(new String(info.getBytes("UTF-8"),
                     "UTF-8"), BarcodeFormat.QR_CODE, 500, 500);
 
 

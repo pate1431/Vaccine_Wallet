@@ -381,11 +381,7 @@ public class HomeController {
                                   @RequestParam String province,@RequestParam String email,
                                   @RequestParam Long phoneNumber)
     {
-
-
-        // List<User> userList= userRepository.findAll();
         User user = userRepository.findByUsername(name);
-
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setMiddleName(middleName);

@@ -28,7 +28,7 @@
                                     <img src="https://cdn.vox-cdn.com/thumbor/xEPEbn-tTPm1jrxuNkFizb7FkCY=/0x0:3000x2000/3320x1868/filters:focal(1557x800:2037x1280):format(webp)/cdn.vox-cdn.com/uploads/chorus_image/image/69130624/GettyImages_1304696666.0.jpg" style="width: 185px;" alt="logo">
                                 </div>
 
-                                <form method="post" th:action="@{/login}">
+                                <form method="post" th:action="@{/login}" onsubmit="return verify()">
                                     <p>Please login to your account</p>
 
                                     <div class="form-outline mb-4">
@@ -39,6 +39,9 @@
                                     <div class="form-outline mb-4">
                                         <input type="password" id="password" name="password" class="form-control" placeholder="Password" />
                                         <label class="form-label"  for="password">Password</label>
+                                        <div th:if="${param.error}">
+                                            <div style="color: red;">Invalid Username Or Password</div>
+                                        </div>
                                     </div>
 
                                     <div class="row justify-content-center my-3 px-3">
@@ -66,33 +69,6 @@
         </div>
     </div>
 </section>
-
-
-
-
-
-                                <!--&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
-<!--<div class="commonContainer">-->
-<!--    <form method="post" th:action="@{/login}">-->
-<!--        <div class="imgcontainer">-->
-<!--            <p>Member Login</p>-->
-<!--            <img src="../static/js/image/login.png" th:src="@{/js/image/login.png}" alt="Avatar" class="avatar">-->
-<!--        </div>-->
-<!--        <div class="container">-->
-<!--           &lt;!&ndash; <div th:if="param.error">-->
-<!--                <div style="color: red;">Invalid Username Or Password</div>-->
-<!--            </div>-->
-<!--            <div th:if="param.logout">-->
-<!--                <div style="color: red;">You Have Been Logged Out</div>-->
-<!--            </div>&ndash;&gt;-->
-<!--            Username:<input type="text" name="username"><br>-->
-
-<!--            Password:<input type="password" name="password"><br>-->
-<!--            <input type="submit" class="button" value="Log In" name="login-submit">-->
-<!--        </div>-->
-<!--    </form>-->
-<!--<p><a href="/register" >Create Account</a></p>-->
-
 </body>
 
 </html>

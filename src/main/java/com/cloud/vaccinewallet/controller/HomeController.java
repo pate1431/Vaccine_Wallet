@@ -407,6 +407,7 @@ public class HomeController {
             model.addAttribute("userList", userRepository.findByUsername(name));
             return "user/index";
         } else {
+     //       model.addAttribute("userList", userRepository.findByUsername(name));
             return "user/changeUserPass";
         }
 

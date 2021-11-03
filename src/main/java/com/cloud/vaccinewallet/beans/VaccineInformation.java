@@ -23,6 +23,6 @@ public class VaccineInformation {
     private String nameOnVaccine;
     private LocalDate vaccineDate;
     private String vaccineName;
-    private Integer noOfDose;
+    private String noOfDose;
 
 }

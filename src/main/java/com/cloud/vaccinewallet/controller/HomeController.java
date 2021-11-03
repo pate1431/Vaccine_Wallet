@@ -236,6 +236,7 @@ public class HomeController {
     @PostMapping("/register")
     public String doRegistration(Model model, @RequestParam String username, @RequestParam String password, @RequestParam String usermail) {
 
+
         if(userRepository.findByUsername(username)==null)
         {
             User user = new User(username, encodePassword(password), usermail, Boolean.valueOf("1"));
@@ -249,6 +250,7 @@ public class HomeController {
         }
         else
         {
+            model.addAttribute("taken","Username Already Taken");
             return "register";
         }
 
@@ -265,7 +267,7 @@ public class HomeController {
         text = pdfStripper.getText(document);
         if(text.trim().isEmpty())
         {
-            model.addAttribute("pdf","Please Enter Valid Vaccine Document");
+            model.addAttribute("pdf","Please Enter Valid Canadian Vaccine Document");
             return "user/upload";
         }
 
@@ -426,7 +428,7 @@ public class HomeController {
             model.addAttribute("userList", userRepository.findByUsername(name));
             return "user/index";
         } else {
-     //       model.addAttribute("userList", userRepository.findByUsername(name));
+            model.addAttribute("usercheck", "Invalid Username");
             return "user/changeUserPass";
         }
 

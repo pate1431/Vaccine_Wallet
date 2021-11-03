@@ -21,6 +21,7 @@
                         <form class="px-md-2" id="form"name="form" action="#" th:action="@{/register}" method="post" <!--onsubmit="return verify()"-->>
 
                             <div class="form-outline mb-4">
+                                <span style="font-size: xx-small; color: red " th:text="${taken}"></span>
                                 <input type="text" id="username" name="username" class="form-control" />
                                 <label class="form-label" for="username">Name</label>
                             </div>

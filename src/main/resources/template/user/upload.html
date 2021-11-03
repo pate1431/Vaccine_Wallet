@@ -5,6 +5,7 @@
     <title>Upload Documents</title>
     <link rel="stylesheet" type="text/css" media="all"
           href="../../static/js/css/upload.css" th:href="@{../js/css/upload.css}"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
 </head>
 <body>
@@ -18,18 +19,26 @@
     <li style="float: right"><a href="/user" th:href="@{/logout}" class="text-white">Logout</a></li>
 </ul>
 
-<div class="card">
-<form method="post" enctype="multipart/form-data" th:action="@{/generateQR}">
-    <img src="../../static/js/image/upload.png" th:src="@{/js/image/upload.png}" alt="Avatar" class="avatar"><br>
-
-    <label>Upload Document</label>
-    <br>
-    <span style="font-size: xx-small; color: red " th:text="${pdf}"></span>
-    <label  style="font-size: xx-small; color: red " th:text="${upload}"></label>
-
-    <input type="file" accept="application/pdf" name="vacfile">
-    <button type="submit" value="Generate QR">Generate QR</button>
-</form>
+<div class="heading">
+    <h2>Upload Vaccination Receipt</h2>
 </div>
+
+<div class="card bg-dark">
+    <div class="card-img-overlay">
+        <form method="post" enctype="multipart/form-data" th:action="@{/generateQR}">
+            <img src="../../static/js/image/upload.png" th:src="@{/js/image/upload.png}" alt="Avatar" class="avatar"><br>
+            <h3>Upload Document</h3>
+            <br>
+            <span style="font-size: xx-small; color: red " th:text="${pdf}"></span>
+            <label  style="font-size: xx-small; color: red " th:text="${upload}"></label>
+            
+            <p style="color: red">Important! Only upload the PDF file.</p>
+            
+            <input type="file"  accept="application/pdf" name="vacfile">
+            <button type="submit" value="Generate QR">Generate QR</button>
+        </form>
+    </div>
+</div>
+
 </body>
 </html>

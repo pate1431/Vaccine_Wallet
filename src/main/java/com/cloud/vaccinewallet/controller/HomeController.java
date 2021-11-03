@@ -318,6 +318,7 @@ public class HomeController {
                         vaccineInfo.setNoOfDose(dose);
                     }
                     count++;
+
                 }
                 vaccineInformationRepository.save(vaccineInfo);
                 user.setVaccine(vaccineInfo);
@@ -335,9 +336,14 @@ public class HomeController {
                         "UTF-8"), BarcodeFormat.QR_CODE, 500, 500);
 
 
+
+           
+          
                 BufferedImage bimg = MatrixToImageWriter.toBufferedImage(matrix);
 
-                File file = new File("C:\\Users\\Sn3haL\\Downloads\\" + auth.getName() + ".png");
+                File file = new File("C:\\Users\\Public\\" + auth.getName() + ".png");
+          
+//                File file = new File("C:\\Users\\Sn3haL\\Downloads\\" + auth.getName() + ".png");
                 ImageIO.write(bimg, "jpg", file);
                 amazonClient.uploadFile(file, auth.getName());
 

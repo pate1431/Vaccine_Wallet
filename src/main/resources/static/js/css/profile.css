@@ -30,21 +30,6 @@ li a:hover {
     text-decoration: none;
     color: white;
 }
-.card {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    max-width: 700px;
-    margin: auto;
-    text-align: center;
-    font-family: arial;
-}
-
-td{
-    text-align: left;
-}
-
-th{
-    text-align: center;
-}
 
 * {box-sizing: border-box;}
 
@@ -60,7 +45,7 @@ input[type=text], input[type=number]{
 }
 
 input[type=submit] {
-    background-color: red;
+    background-color: #04AA6D;
     color: white;
     padding: 12px 20px;
     border: none;
@@ -69,7 +54,7 @@ input[type=submit] {
 }
 
 input[type=submit]:hover {
-    background-color: red;
+    background-color: #45a049;
 }
 
 button{

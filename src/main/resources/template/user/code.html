@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>QR Code</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/js/css/index.css}"/>
+    <link rel="stylesheet" type="text/css" media="all"
+          href="../../static/js/css/index.css" th:href="@{../js/css/index.css}"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <style>
         .flex-container {
@@ -31,12 +32,11 @@
     <li style="float: right"><a href="/user" th:href="@{/logout}" class="text-white">Logout</a></li>
 </ul>
 
-
 <div class="row">
-    <div id="code" class="col-sm-4">
+    <div id="code" class="col-sm-5">
         <img th:src="@{'https://qrclouddb.s3.ca-central-1.amazonaws.com/'+${userName}+'.jpg'}"  alt="Code"/>
     </div>
-    <div class="col-sm-8">
+    <div class="col-sm-6.5">
 
         <table class="table">
             <thead class="thead-dark">

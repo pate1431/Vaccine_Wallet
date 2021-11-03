@@ -235,14 +235,23 @@ public class HomeController {
 
     @PostMapping("/register")
     public String doRegistration(Model model, @RequestParam String username, @RequestParam String password, @RequestParam String usermail) {
-        User user = new User(username, encodePassword(password), usermail, Boolean.valueOf("1"));
-        user.getRoles().add(roleRepository.findByRolename("ROLE_USER"));
-        user.setEnabled(true);
-        userRepository.save(user);
-        e.sendEmail(user.getEmail(),
-                "VaccineWallet", "Account Created");
-        model.addAttribute("userList", userRepository.findAll());
-        return "redirect:/";
+
+        if(userRepository.findByUsername(username)==null)
+        {
+            User user = new User(username, encodePassword(password), usermail, Boolean.valueOf("1"));
+            user.getRoles().add(roleRepository.findByRolename("ROLE_USER"));
+            user.setEnabled(true);
+            userRepository.save(user);
+            e.sendEmail(user.getEmail(),
+                    "VaccineWallet", "Account Created");
+            model.addAttribute("userList", userRepository.findAll());
+            return "redirect:/";
+        }
+        else
+        {
+            return "register";
+        }
+
     }
 
     @PostMapping(value = "/generateQR", consumes = "multipart/form-data")

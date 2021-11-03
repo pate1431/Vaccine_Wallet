@@ -2,19 +2,18 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
-    <title>Welcome</title>
+    <title>QR Code</title>
     <link rel="stylesheet" type="text/css" th:href="@{/js/css/index.css}"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <style>
         .flex-container {
             display: flex;
-            background-color: DodgerBlue;
-        }
 
+        }
         .flex-container > div {
             margin: 10px;
             padding: 20px;
             font-size: 30px;
-            overflow: scroll;
             width: 50%;
             height: auto;
         }
@@ -23,10 +22,11 @@
 <body>
 
 <ul>
-    <li><a class="active" href="index.html" th:href="@{/index}">Home</a></li>
+    <li><a class="active" href="index.html" th:href="@{/user/index}">Home</a></li>
     <li><a href="upload.html"  th:href="@{/upload}"> Upload Documents</a></li>
-    <li><a href="code.html" th:href="@{/code}">Qr-Code Information</a></li>
-    <li><a href="profile.html" th:href="@{'/profile/'+${name}}">Edit Profile</a></li>
+    <li><a href="code.html" th:href="@{/user/code}">Qr-Code Information</a></li>
+    <li><a href="profile.html" th:href="@{'/profile/'+${userName}}">Edit Profile</a></li>
+    <li><a href="changeUserPass.html" th:href="@{'/changeUserPass/'+${userName}}">Edit Username/Password</a></li>
     <li><a href="contact.html" th:href="@{/contact}">Contact</a></li>
     <li style="float: right"><a href="/user" th:href="@{/logout}" class="text-white">Logout</a></li>
 </ul>
@@ -35,12 +35,28 @@
 
 <div class="flex-container">
     <div id="code">
-        <img th:src="@{/js/image/code.png}"  alt="Code"/>
+        <img th:src="@{'https://qrclouddb.s3.ca-central-1.amazonaws.com/'+${userName}+'.jpg'}"  alt="Code"/>
     </div>
-    <div id="info">
-        <p th:text="${pdfInformation}">
-          Info
-        </p>
+    <div>
+        <table class="table">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Vaccine Date</th>
+                <th scope="col">Vaccine Name</th>
+                <th scope="col">Recieved Doses</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="info: ${vaccineInfo}">
+                <td th:if="${info.vaccine != null}" th:text="${info.vaccine.nameOnVaccine}"></td>
+                <td th:if="${info.vaccine != null}" th:text="${info.vaccine.vaccineDate}"></td>
+                <td th:if="${info.vaccine != null}" th:text="${info.vaccine.vaccineName}"></td>
+                <td th:if="${info.vaccine != null}" th:text="${info.vaccine.noOfDose}"></td>
+            </tr>
+
+            </tbody>
+        </table>
     </div>
 </div>
 

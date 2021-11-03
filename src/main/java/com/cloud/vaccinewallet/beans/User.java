@@ -12,7 +12,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 @Data
 @AllArgsConstructor
@@ -30,14 +29,6 @@ public class User {
     private String encryptedPassword;
     @NonNull
     private Boolean enabled;
-    @Lob
-    private Blob qr;
-
-    public User(@NonNull String username,@NonNull String encryptedPassword, Boolean enabled) {
-        this.username = username;
-        this.encryptedPassword=encryptedPassword;
-        this.enabled=enabled;
-    }
 
     //User Information
     @NonNull
@@ -47,18 +38,34 @@ public class User {
 
     private String middleName;
     @NonNull
-    private Long phoneNumber;
-    @NonNull
     private Integer age;
     @NonNull
+    private String hcNumber;
+    @NonNull
+    private String address;
+    @NonNull
+    private String postalCode;
+    @NonNull
+    private String city;
+    @NonNull
+    private String province;
+    @NonNull
+    private Long phoneNumber;
+    @NonNull
     private String email;
-
-   
-
-
 
     @ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Role> roles = new ArrayList<Role>();
 
+    public User(@NonNull String username,@NonNull String encryptedPassword,@NonNull String email, Boolean enabled) {
+        this.username = username;
+        this.email = email;
+        this.encryptedPassword=encryptedPassword;
+        this.enabled=enabled;
+    }
+
+    @OneToOne
+    @JoinTable(name="USER_VACCINE", joinColumns= @JoinColumn(name="USER_ID"),	inverseJoinColumns= @JoinColumn(name="VACCINE_ID"))
+    private VaccineInformation vaccine;
 
 }

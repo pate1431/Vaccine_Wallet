@@ -1,11 +1,8 @@
 package com.cloud.vaccinewallet.config;
 
 import com.cloud.vaccinewallet.beans.Roles;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,7 +11,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.HeaderWriterLogoutHandler;
+import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import javax.servlet.http.HttpServletResponse;
 
 @Configuration
 @EnableWebSecurity
@@ -44,11 +45,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().headers().frameOptions().disable().and().authorizeRequests()
-                .antMatchers("/", "/css/**", "static/**", "/image/**", "/js/**", "/**").permitAll()
+                .antMatchers("/", "/register", "/css/**", "static/**", "/image/**", "/js/**").permitAll()
                 .antMatchers("/admin/**").hasRole(Roles.ADMIN.name())
-                .antMatchers(("/user/**")).hasRole(Roles.USER.name()).anyRequest().authenticated().
-                and().formLogin().loginPage("/login")
-                .loginProcessingUrl("/login").successHandler(customeSuccessHandler()).permitAll().and().logout().invalidateHttpSession(true).clearAuthentication(true).logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login?logout").permitAll()
+                .antMatchers(("/user/**")).hasRole(Roles.USER.name()).anyRequest()
+                .authenticated()
+                .and().formLogin().loginPage("/login")
+                .loginProcessingUrl("/login")
+                .successHandler(customeSuccessHandler()).permitAll()
+                .and().logout()
+                .invalidateHttpSession(true)
+                .clearAuthentication(true)
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/login?logout").permitAll()
                 .and().exceptionHandling().accessDeniedHandler(accessDeniedHandler);
     }
 

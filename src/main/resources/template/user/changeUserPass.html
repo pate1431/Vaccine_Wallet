@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
-    <title>Upload Documents</title>
+    <title>Edit Signing Info</title>
     <link rel="stylesheet" type="text/css" media="all"
-          href="../../static/js/css/upload.css" th:href="@{../js/css/upload.css}"/>
+          href="../../static/js/css/index.css" th:href="@{../js/css/index.css}"/>
 
 </head>
 <body>
+
 <ul>
     <li><a class="active" href="index.html" th:href="@{/user/index}">Home</a></li>
     <li><a href="upload.html"  th:href="@{/upload}"> Upload Documents</a></li>
@@ -18,13 +19,17 @@
     <li style="float: right"><a href="/user" th:href="@{/logout}" class="text-white">Logout</a></li>
 </ul>
 
-<div class="card">
-<form method="post" enctype="multipart/form-data" th:action="@{/generateQR}">
-    <img src="../../static/js/image/upload.png" th:src="@{/js/image/upload.png}" alt="Avatar" class="avatar"><br>
-    <label>Upload Document</label>
-    <input type="file" name="vacfile">
-    <button type="submit" value="Generate QR">Generate QR</button>
-</form>
+<div>
+    <form name="form" method="post" th:action="@{'/changePass/'+${name}}">
+
+        <Label> Username: </Label>
+        <input type="text" name="username" placeholder="Enter Username">
+        <Label> New Password: </Label>
+        <input type="password" name="password" placeholder="Enter New Password">
+
+        <input type="submit" value="Change Password">
+    </form>
 </div>
+
 </body>
 </html>

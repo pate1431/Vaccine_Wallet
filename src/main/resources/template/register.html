@@ -21,8 +21,9 @@
 
                             <div class="form-outline mb-4">
                                 <span style="font-size: xx-small; color: red " th:text="${taken}"></span>
-                                <input type="text" minlength="5" id="username" required name="username" class="form-control" />
-                                <label class="form-label" for="username">Name</label>
+                                <p id="errorU" style="color: red"></p>
+                                <input type="text" minlength="5" id="username" xrequired name="username" class="form-control" />
+                                <label class="form-label" for="username">Username</label>
                             </div>
 
                             <div class="form-outline mb-4">
@@ -52,6 +53,13 @@
                             <script>
                                 document.querySelector('#button').onclick = function ()
                                 {
+                                    var username = document.getElementById("username").value;
+
+                                    if(username.indexOf(' ') >= 0){
+                                        document.querySelector("#errorU").textContent = "Please remove the spaces !!";
+                                        return false
+                                    }
+
                                     var password = document.querySelector('#password').value,
                                         confirmPassword = document.querySelector('#verifyPassword').value;
                                     if(password == "")
@@ -68,6 +76,7 @@
                                         document.querySelector("#errorPR").textContent = "VerifyPassword Field Emplty !!";
                                         return false
                                     }
+
                                 }
                     </script>
                     </div>

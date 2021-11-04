@@ -9,6 +9,7 @@
 
 </head>
 <body>
+
 <ul>
     <li><a class="active" href="index.html" th:href="@{/user/index}">Home</a></li>
     <li><a href="upload.html"  th:href="@{/upload}"> Upload Documents</a></li>
@@ -30,11 +31,11 @@
             <h3>Upload Document</h3>
             <br>
             <span style="font-size: xx-small; color: red " th:text="${pdf}"></span>
-            <label  style="font-size: xx-small; color: red " th:text="${upload}"></label>
+            <label  style="font-size: xx-small; color: red "  th:text="${upload}"></label>
             
             <p style="color: red">Important! Only upload the PDF file.</p>
             
-            <input type="file"  accept="application/pdf" name="vacfile">
+            <input type="file" required accept ="application/pdf" name="vacfile">
             <button type="submit" value="Generate QR">Generate QR</button>
         </form>
     </div>

@@ -2,7 +2,6 @@ package com.cloud.vaccinewallet.controller;
 
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -22,7 +21,6 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
-import org.apache.tomcat.jni.Local;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -176,6 +174,7 @@ public class HomeController {
         model.addAttribute("userData", userRepository.findAll());
         return "admin/database";
     }
+
 
 
 //show index in user on load
@@ -435,5 +434,6 @@ public class HomeController {
         }
 
     }
+
 
 }

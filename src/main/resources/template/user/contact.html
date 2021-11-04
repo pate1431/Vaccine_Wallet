@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
 
     <title>Contact Us</title>
@@ -32,18 +33,19 @@
                     <div id="error_msg"></div>
                     <form action="javascript:sendmail()" method="post" id="myForm">
                         <div class="field">
-                            <input type="text" class="form-control" name="Name" id="Name" placeholder="Name" required="">
+                            <input type="text" class="form-control" required name="Name" id="Name" placeholder="Name" >
                         </div>
                         <div class="field">
-                            <input type="email" class="form-control" name="Sender" id="Sender" placeholder="Email"
-                                   required="">
+                            <input type="email" class="form-control" required name="Sender" id="Sender" placeholder="Email"
+                                   >
                         </div>
                         <div class="field">
                             <input type="text" class="form-control" name="Subject" id="Subject" placeholder="Subject"
-                                   required="">
+                                   >
                         </div>
-                        <textarea name="Message" class="form-control" id="Message" placeholder="Message"
-                                  required=""></textarea>
+                        <textarea name="Message" class="form-control" required id="Message" placeholder="Message"
+                                  ></textarea>
+
                         <button type="submit" class="btn btn-contact">Send Message</button>
                     </form>
                 </div>

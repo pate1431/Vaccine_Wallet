@@ -21,18 +21,18 @@
 
                             <div class="form-outline mb-4">
                                 <span style="font-size: xx-small; color: red " th:text="${taken}"></span>
-                                <input type="text" minlength="5" id="username" name="username" class="form-control" />
+                                <input type="text" minlength="5" id="username" required name="username" class="form-control" />
                                 <label class="form-label" for="username">Name</label>
                             </div>
 
                             <div class="form-outline mb-4">
-                                <input type="email" id="usermail" name="usermail" class="form-control" />
+                                <input type="email" id="usermail" required name="usermail" class="form-control" />
                                 <label class="form-label" for="usermail">Email</label>
                             </div>
 
                             <div class="form-outline mb-4">
                                 <p id="errorP" style="color: red"></p>
-                                <input type="password" id="password" name="password" class="form-control"
+                                <input type="password" id="password" required name="password" class="form-control"
                                 pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                                 title="Must contain at least One number and One uppercase and lowercase letter, and at least 8 or more characters"
                                 />
@@ -41,7 +41,7 @@
 
                             <div class="form-outline mb-4">
                                 <p id="errorPR" style="color: red"></p>
-                                <input type="password" id="verifyPassword" name="verifyPassword" class="form-control" />
+                                <input type="password" id="verifyPassword" required name="verifyPassword" class="form-control" />
                                 <label class="form-label" for="verifyPassword">Verify Password</label>
                             </div>
 

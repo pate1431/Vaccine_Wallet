@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
+
     <meta charset="UTF-8">
     <title>Edit Signing Info</title>
     <link rel="stylesheet" type="text/css" media="all"
@@ -28,16 +29,14 @@
 
         <span style="font-size: xx-small; color: red " th:text="${usercheck}"></span><br>
         <Label> Username: </Label>
-        <input type="text"  class="form-control" name="username" placeholder="Enter Username">
+        <input type="text" required class="form-control" name="username" placeholder="Enter Username">
       
         <Label> New Password: </Label>        
-        <input type="password" class="form-control" name="password" placeholder="Enter New Password"
+        <input type="password" required class="form-control" name="password" placeholder="Enter New Password"
                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                title="Must contain at least One number and One uppercase and lowercase letter, and at least 8 or more characters"
         ><br>
-
         <input type="submit" value="Change Password">
-
     </form>
 </div>
 

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
+
     <meta charset="UTF-8">
     <title>Welcome</title>
     <link rel="stylesheet" type="text/css" media="all"
@@ -14,9 +15,7 @@
       <li><a href="database.html" th:href="@{'/admin/database/'+${name}}">Database</a></li>
       <li style="float: right"><a href="/user" th:href="@{/logout}" class="text-white">Logout</a></li>
   </ul>
-  <h2>Welcome To The Vaccine Wallet Application Admin</h2>
-
-  <h1>Hello ADMIN</h1>
+  <h2 style="text-align: center">Welcome To The Vaccine Wallet Application Admin</h2>
 
 
 </body>

@@ -401,6 +401,7 @@ public class HomeController {
         userRepository.save(user);
         model.addAttribute("user", new User());
         model.addAttribute("userList", userRepository.findByUsername(name));
+        model.addAttribute("userName", user.getUsername());
         return "user/index";
     }
 
